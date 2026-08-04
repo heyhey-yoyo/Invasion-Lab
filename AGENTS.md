@@ -17,7 +17,6 @@ This file provides guidance for AI coding agents working in this repository.
 ## Repository layout
 
 - Repository root = project root (`package.json`, `src/`, `scripts/`, `public/`, `presets/`, `tests/`, `docs/`).
-- `delivery/`: delivery archive (`baseline/`, `release/`, `reports/`, `diffs/`, `checksums.txt`). **Not part of the build.** When release artifacts change, regenerate the zips and refresh `delivery/checksums.txt` and `delivery/reports/`.
 - `docs/`: architecture, model, scenarios, validation, deployment, migration, and scientific-scope documentation.
 
 ## Architecture boundaries

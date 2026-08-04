@@ -66,7 +66,7 @@ dist
 - Build command：`npm run build`
 - Build output directory：`dist`
 
-无需设置 Root directory（默认即为仓库根）。交付归档与审查材料位于 `delivery/`，不参与构建。Node.js 版本读取 `.node-version`。
+无需设置 Root directory（默认即为仓库根）。Node.js 版本读取 `.node-version`。
 
 ## 项目结构
 
@@ -80,9 +80,6 @@ Invasion-Lab/
 ├── scripts/                       # 构建、校验、扫描、smoke 脚本
 ├── tests/                         # 22 个自动化测试（node --test）
 ├── docs/                          # 架构、模型、场景、部署等文档
-├── delivery/                      # 交付归档（不参与构建）
-│   ├── baseline/  release/  reports/  diffs/
-│   └── checksums.txt              # 交付文件 SHA-256
 └── AGENTS.md                      # 通用 AI 代理指南（见下）
 ```
 
