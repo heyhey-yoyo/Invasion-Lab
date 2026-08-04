@@ -16,7 +16,7 @@
 - JSON、CSV、PNG、URL 分享和本地项目保存；
 - v1 项目设置自动迁移；
 - PWA 离线缓存；
-- 零运行时依赖，可部署到 Cloudflare Pages、GitHub Pages、Netlify、Vercel 或任意静态服务器。
+- 零运行时依赖，可部署到 Cloudflare Pages、Netlify、Vercel 或任意静态服务器。
 
 ## 快速开始
 
@@ -80,7 +80,6 @@ Invasion-Lab/
 ├── scripts/                       # 构建、校验、扫描、smoke 脚本
 ├── tests/                         # 22 个自动化测试（node --test）
 ├── docs/                          # 架构、模型、场景、部署等文档
-├── .github/                       # CI 与 GitHub Pages 工作流
 ├── delivery/                      # 交付归档（不参与构建）
 │   ├── baseline/  release/  reports/  diffs/
 │   └── checksums.txt              # 交付文件 SHA-256

@@ -6,7 +6,7 @@ This file provides guidance for AI coding agents working in this repository.
 
 **Invasion Wind Tunnel** is a deployable, front-end-only, multi-scenario laboratory for qualitative cancer-cell collective invasion experiments. v2.0 upgrades the v1 single narrow-gap demo into a modular, multi-scenario system.
 
-- Zero runtime dependencies, static-deploy ready (Cloudflare Pages / GitHub Pages / Netlify / Vercel).
+- Zero runtime dependencies, static-deploy ready (Cloudflare Pages / Netlify / Vercel).
 - Node.js >= 20 (`.node-version` pins 22.16.0), ESM modules throughout.
 
 ### Scientific boundaries (must not be violated)
@@ -16,7 +16,7 @@ This file provides guidance for AI coding agents working in this repository.
 
 ## Repository layout
 
-- Repository root = project root (`package.json`, `src/`, `scripts/`, `public/`, `presets/`, `tests/`, `docs/`, `.github/`).
+- Repository root = project root (`package.json`, `src/`, `scripts/`, `public/`, `presets/`, `tests/`, `docs/`).
 - `delivery/`: delivery archive (`baseline/`, `release/`, `reports/`, `diffs/`, `checksums.txt`). **Not part of the build.** When release artifacts change, regenerate the zips and refresh `delivery/checksums.txt` and `delivery/reports/`.
 - `docs/`: architecture, model, scenarios, validation, deployment, migration, and scientific-scope documentation.
 

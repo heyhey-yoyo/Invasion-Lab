@@ -32,14 +32,7 @@ npm run check
 
 ## GitHub Pages
 
-仓库 Settings → Pages → Source 选择 **GitHub Actions**。`.github/workflows/deploy-pages.yml` 会：
-
-1. 以锁文件安装；
-2. 执行全部检查；
-3. 上传 `dist` Pages artifact；
-4. 使用独立 deploy job 发布。
-
-工作流只授予所需权限：构建阶段 `contents: read`，部署阶段增加 `pages: write` 与 `id-token: write`。所有 Action 均固定到完整 commit SHA。
+仓库未包含 GitHub Actions 自动发布工作流。如需使用 GitHub Pages，请在本地执行 `npm run build` 后，将 `dist/` 内容通过 Pages 手动上传，或自行添加部署 workflow（构建命令 `npm run build`，发布目录 `dist`）。
 
 ## Netlify / Vercel
 
