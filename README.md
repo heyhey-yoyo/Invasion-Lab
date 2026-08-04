@@ -84,7 +84,7 @@ Invasion-Lab/
 ├── delivery/                      # 交付归档（不参与构建）
 │   ├── baseline/  release/  reports/  diffs/
 │   └── checksums.txt              # 交付文件 SHA-256
-└── .codebuddy/agents/             # CodeBuddy 自定义 Agent（见下）
+└── AGENTS.md                      # 通用 AI 代理指南（见下）
 ```
 
 ## 架构
@@ -119,7 +119,7 @@ src/
 
 ## AI 开发 Agent
 
-仓库内置 CodeBuddy 自定义 Agent（`.codebuddy/agents/iwt-dev.md`），在 CodeBuddy 中可用 `@iwt-dev` 引用或由描述自动触发。它封装了本项目的架构边界、版本与可复现性约束、标准验证命令（`npm run check`）和部署约定，适合在新增场景、修改引擎、更新测试与交付物时使用。
+仓库根目录提供通用 `AGENTS.md`，供 CodeBuddy、Claude Code、Cursor 等 AI 编码代理自动读取。它封装了本项目的架构边界、版本与可复现性约束、标准验证命令（`npm run check`）和部署约定，适合在新增场景、修改引擎、更新测试与交付物时使用。
 
 ## 可复现性
 
