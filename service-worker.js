@@ -1,4 +1,4 @@
-const CACHE = 'iwt-static-v2.0.0';
+const CACHE = 'iwt-static-v4.0.1';
 const CORE = [
   './',
   './index.html',
@@ -7,6 +7,9 @@ const CORE = [
   './simulation/model.js',
   './simulation/versions.js',
   './simulation/profiles.js',
+  './simulation/interventions.js',
+  './simulation/comparison.js',
+  './simulation/comparison-worker.js',
   './simulation/config.js',
   './simulation/outcomes.js',
   './simulation/engine.js',
@@ -17,6 +20,10 @@ const CORE = [
   './simulation/core/hash.js',
   './simulation/core/rng.js',
   './simulation/core/components.js',
+  './simulation/core/deformable-cell.js',
+  './simulation/core/guidance-field.js',
+  './simulation/core/ecm-field.js',
+  './simulation/core/spatial-hash.js',
   './simulation/scenarios/catalog.js',
   './assets/icon.svg',
   './assets/icon-192.png',
@@ -59,7 +66,6 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE)
       .then(cache => cache.addAll(CORE))
-      .then(() => self.skipWaiting())
   );
 });
 

@@ -1,8 +1,8 @@
 {
-  "name": "Invasion Wind Tunnel 2｜肿瘤侵袭风洞",
-  "short_name": "IWT 2",
-  "description": "多场景、可复现、纯前端的癌细胞群体侵袭机制实验室。",
-  "start_url": "./?app=iwt2",
+  "name": "Invasion Wind Tunnel 4｜肿瘤侵袭风洞",
+  "short_name": "IWT 4",
+  "description": "基于可变形细胞、显式细胞核、可重塑 ECM 与动态 Leader 的纯前端侵袭机制实验室。",
+  "start_url": "./?app=iwt4",
   "display": "standalone",
   "background_color": "#071419",
   "theme_color": "#081217",
@@ -26,7 +26,7 @@
       "purpose": "any"
     }
   ],
-  "id": "./?app=iwt2",
+  "id": "./?app=iwt4",
   "scope": "./",
   "lang": "zh-CN",
   "categories": [

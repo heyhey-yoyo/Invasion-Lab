@@ -1,5 +1,6 @@
 export { APP_VERSION, CONFIG_SCHEMA_VERSION, MODEL_VERSION, RESULT_SCHEMA_VERSION } from './versions.js';
 export { LEVELS, PRESETS } from './profiles.js';
+export { getIntervention, INTERVENTIONS, interventionsForScenario } from './interventions.js';
 export { DEFAULT_SCENARIO_ID, getScenario, SCENARIOS } from './scenarios/catalog.js';
 export { makeConfig, migrateConfig } from './config.js';
 export { classifyOutcome, explainOutcome, phaseLabel, recommendControl } from './outcomes.js';

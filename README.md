@@ -1,22 +1,36 @@
-# Invasion Wind Tunnel 2｜肿瘤侵袭风洞
+# Invasion Wind Tunnel 4｜肿瘤侵袭风洞
 
-纯前端、可静态部署的二维癌细胞群体侵袭机制实验室。v2.0 将 v1.1 的单一狭窄缺口演示升级为模块化多场景系统，同时保持 Play 模式的低门槛体验。
+纯前端、可静态部署的二维癌细胞群体侵袭机制实验室。v4 在 v3 的面积守恒可变形细胞和显式细胞核基础上，加入**可降解/可重塑 ECM、动态 Leader 竞争、接触网络方向传播、细胞状态转换和配对随机种子对照实验**。
 
 > 科学边界：本项目用于机制探索、教学和定性假设比较，不用于临床预测、患者分层或治疗决策。
 
-## v2.0 主要能力
+## v4.0.1 审查维护版
 
-- 四个场景：狭窄缺口、肿瘤出芽、Leader–Follower、拥堵与解堵；
-- 四种行为人格，可跨场景组合；
-- 场景专属几何、扰动、事件、指标语义和结果分类；
-- Web Worker 固定时间步模拟；
-- 固定随机种子、配置哈希、场景哈希和模型版本记录；
-- 独立 Batch Worker 运行多随机种子侵袭地图，显示逐格进度、主导模式与一致度；
-- 关键事件时间线与前后回放；
-- JSON、CSV、PNG、URL 分享和本地项目保存；
-- v1 项目设置自动迁移；
-- PWA 离线缓存；
-- 零运行时依赖，可部署到 Cloudflare Pages、Netlify、Vercel 或任意静态服务器。
+本维护版不增加可调参数或运行时依赖，修正了首次边界接触事件、Leader 路线传播、Worker 旧任务串扰、键盘快捷键冲突、分段按钮状态、配对实验统计标注和 Service Worker 更新时序，并增加对应回归测试。配置与结果 schema 仍为 4。
+
+## v4 主要升级
+
+- 低分辨率 ECM 场保存局部密度、损伤、应变和纤维方向；
+- 细胞牵引可重排纤维，并以有限速率降解局部 ECM；
+- ECM 密度和纤维方向反向影响迁移阻力与路径；
+- Leader 不再主要由预设身份指定，而由前缘位置、牵引不对称、接触负荷和方向线索动态竞争产生；
+- Leader 可退出并由新的前缘细胞补位；Follower 通过接触网络传播的方向信号组织迁移；
+- 新增迁移、Follower、Leader、应激和暂时静止五类自动细胞状态；
+- 黏附强度结合近似接触长度，不再只依赖中心距离；
+- Lab 模式提供固定种子配对的单因素对照，自动汇总组间差、探索性区间和结局分布；
+- 新增 ECM 重塑率、Leader 寿命与更替、牵引不对称、邻居交换、核高应变持续时间等指标；
+- UI 仍只暴露 3 个生物学倾向与 1 个场景几何参数，没有新增连续滑块。
+
+## 用户可调参数
+
+Explore 模式只提供：
+
+1. **细胞连接强度**；
+2. **细胞柔顺性**；
+3. **群体引导**；
+4. **当前场景的关键几何尺寸**。
+
+底层 ECM 阻力、降解率、核尺寸、接触刚度、膜松弛、阻尼和扩散网格均使用校准预设。Lab 模式中的处理组也采用离散单因素选项，例如“提高环境阻力”“抑制基质降解”“抑制 Leader 形成”，而不是增加底层参数面板。
 
 ## 快速开始
 
@@ -30,118 +44,56 @@ npm run dev
 
 打开 `http://localhost:4173`。
 
-常用命令：
+## 零后端部署
 
-```bash
-npm run validate       # 静态结构、资源、语法与离线资产检查
-npm run scan           # 敏感文件、凭据模式与异常大文件检查
-npm test               # 全部自动化测试
-npm run test:scenarios # 场景与结果回归测试
-npm run test:batch     # 多随机种子批量地图测试
-npm run build          # 构建到 dist/
-npm run preview        # 预览已构建的 dist/
-```
-
-## 部署
-
-站点文件位于仓库根目录，可零构建直接发布。Cloudflare Pages 连接 Git 仓库后：
+仓库根目录就是完整站点，可直接发布到 Cloudflare Pages 或任意静态服务器。`npm run build` 会生成 `dist/` 静态快照。
 
 - Framework preset：None
-- Build command：留空（无构建）
-- Build output directory：留空（默认即根目录）
+- 环境变量：无
+- 后端、数据库、Functions：无
 
-无需设置 Root directory，无需构建步骤——仓库根目录就是完整站点。`npm run build` 仍可生成 `dist/` 快照，供需要构建输出目录的平台使用。项目不需要环境变量、后端、数据库或自定义服务器响应头。Cloudflare Pages 会读取根目录的 `_headers`；其他平台的安全响应头位于 `netlify.toml` 和 `vercel.json`。
-
-## 项目结构
+## 模型结构
 
 ```text
-Invasion-Lab/
-├── index.html                     # 站点入口（根目录即站点）
-├── app.js  styles.css             # 应用逻辑与样式
-├── manifest.webmanifest           # PWA 清单
-├── service-worker.js              # PWA 离线缓存
-├── 404.html  robots.txt  _headers # 静态页与安全响应头
-├── assets/                        # 图标
-├── simulation/                    # 模拟引擎（见下方架构）
-├── presets/                       # 场景预置 JSON
-├── package.json                   # 项目与脚本
-├── .node-version                  # Node 版本（22.16.0）
-├── release-manifest.json          # 发布清单
-├── scripts/                       # 校验、扫描、测试、构建、smoke 脚本
-├── tests/                         # 22 个自动化测试（node --test）
-├── docs/                          # 架构、模型、场景、部署等文档
-└── AGENTS.md                      # 通用 AI 代理指南（见下）
+simulation/
+├── engine.js                       # 多尺度细胞—细胞核—ECM 积分器
+├── interventions.js                # 少量离散实验处理
+├── comparison.js                   # 配对随机种子单因素对照
+├── comparison-worker.js            # 对照实验 Worker
+├── core/deformable-cell.js         # 面积守恒边界与形状相关接触
+├── core/ecm-field.js               # ECM 密度、损伤、应变与纤维场
+├── core/spatial-hash.js            # 确定性空间哈希邻居搜索
+├── core/guidance-field.js          # 绕障碍稳态扩散型引导场
+├── scenarios/catalog.js            # 场景几何、初态、扰动与语义
+├── worker-runtime.js               # 固定时间步实时 Worker
+└── batch.js / batch-worker.js      # 多随机种子参数扫描
 ```
 
-## 架构
+## 可复现性与数据格式
 
-```text
-根目录（即站点）
-├── app.js                         # UI、回放、导出与批量地图交互
-├── simulation/
-│   ├── versions.js                # 应用、模型与数据格式版本
-│   ├── profiles.js                # 行为人格
-│   ├── config.js                  # 校验、迁移与哈希
-│   ├── outcomes.js                # 场景感知的结果分类和解释
-│   ├── engine.js                  # 通用软粒子方向—力学引擎
-│   ├── model.js                   # 模块门面：聚合重导出 + heuristicPhase 启发式预测
-│   ├── batch.js                   # 多随机种子参数扫描
-│   ├── batch-worker.js            # 独立批量运行线程与进度
-│   ├── worker-runtime.js          # 固定时间步运行时
-│   ├── worker.js                  # Worker 入口
-│   ├── core/                      # RNG、哈希、连通分量
-│   └── scenarios/catalog.js       # 场景定义与几何构建
-└── service-worker.js              # PWA 离线缓存
-```
+v4 破坏性格式变化：
 
-场景层只定义“初始条件、几何、目标、扰动和语义”，不会直接复制整套模拟器。详见：
+- 配置 schema：4；
+- 结果 schema：4；
+- frame stride：20；
+- frame 另带压缩 ECM 快照；
+- 本地保存键：`iwt-project-v4`，仍可迁移 v3/v2/v1 项目；
+- 配置哈希包含处理组 `interventionId`。
 
-- `docs/ARCHITECTURE.md`
+第三方解析器必须读取 `schemaVersion` 和 `meta.stride`，不要假设固定数组长度。
+
+## 文档
+
 - `docs/MODEL.md`
+- `docs/ARCHITECTURE.md`
 - `docs/SCENARIOS.md`
-- `docs/MIGRATION_V1_TO_V2.md`
 - `docs/VALIDATION.md`
-- `docs/DEPLOYMENT.md`
-- `docs/REFERENCES.md`
-- `docs/PRODUCT_SPEC.md`
 - `docs/SCIENTIFIC_SCOPE.md`
+- `docs/REFERENCES.md`
+- `docs/MIGRATION_V3_TO_V4.md`
+- `docs/DEPLOYMENT.md`
 - `docs/UX_PRINCIPLES.md`
 
-## AI 开发 Agent
+## 许可证与参考实现
 
-仓库根目录提供通用 `AGENTS.md`，供 CodeBuddy、Claude Code、Cursor 等 AI 编码代理自动读取。它封装了本项目的架构边界、版本与可复现性约束、标准验证命令（`npm run check`）和部署约定，适合在新增场景、修改引擎、更新测试与交付物时使用。
-
-## 可复现性
-
-每份结果包含：
-
-- 应用版本；
-- 模型版本；
-- 场景版本；
-- 配置 schema 版本；
-- 随机种子；
-- 配置哈希；
-- 场景哈希；
-- 扰动；
-- 事件时间线；
-- 模型科学边界声明。
-
-相同模型版本、配置和随机种子会产生相同模拟帧与事件。不同浏览器的浮点实现通常一致，但本项目不将跨任意未来运行时的逐位一致性作为科学承诺。
-
-## v1 兼容性
-
-v1 的 URL 参数名称继续受支持；缺少场景字段时默认迁移到 `narrow-gap`。本地保存会优先读取 `iwt-project-v2`，找不到时尝试迁移 `iwt-project-v1`。
-
-v2 的帧数据 stride 从 9 增加到 11，结果 JSON schema 从 1 升级到 2。第三方解析程序应根据 `schemaVersion` 和 `meta.stride` 读取，而不是假设固定数组长度。
-
-## 许可证
-
-项目代码使用 MIT License。当前版本没有第三方运行时依赖；后续若接入 Artistoo，必须单独审查其许可证、引用要求与模型差异。
-
----
-
-## AI 维护提醒
-
-> **⚠️ 任何修改此项目的 AI 代理（Claude Code、Cursor、Copilot 等）都必须同步更新本文件与 [AGENTS.md](./AGENTS.md)。**
->
-> - 修改模拟引擎或场景定义时，必须保持固定种子确定性并补充对应测试
+项目代码使用 MIT License，运行时为零第三方依赖。v4 参考了 Cellular Potts、可变形粒子、集体迁移、动态 Leader 和可降解 ECM 文献的机制设计，但没有嵌入 Artistoo 或其他模拟框架源码。详见 `THIRD_PARTY_NOTICES.md` 与 `docs/REFERENCES.md`。

@@ -3,7 +3,7 @@ const freeze = value => Object.freeze(value);
 export const SCENARIOS = freeze({
   'narrow-gap': freeze({
     id: 'narrow-gap',
-    version: '2.0.0',
+    version: '4.0.1',
     name: '狭窄缺口',
     eyebrow: 'Narrow-gap transit',
     title: '细胞会堵住，还是穿过去？',
@@ -29,7 +29,7 @@ export const SCENARIOS = freeze({
   }),
   budding: freeze({
     id: 'budding',
-    version: '2.0.0',
+    version: '4.0.1',
     name: '肿瘤出芽',
     eyebrow: 'Tumor budding',
     title: '什么时候会从主体边缘长出小芽？',
@@ -56,7 +56,7 @@ export const SCENARIOS = freeze({
   }),
   'leader-follower': freeze({
     id: 'leader-follower',
-    version: '2.0.0',
+    version: '4.0.1',
     name: 'Leader–Follower',
     eyebrow: 'Leader–follower branching',
     title: '一个领头细胞能带群体走对分叉吗？',
@@ -82,7 +82,7 @@ export const SCENARIOS = freeze({
   }),
   unjamming: freeze({
     id: 'unjamming',
-    version: '2.0.0',
+    version: '4.0.1',
     name: '拥堵与解堵',
     eyebrow: 'Jamming–unjamming',
     title: '高密度群体何时会突然流动？',
@@ -120,13 +120,18 @@ export function buildGeometry(scenario, config, runtime = {}) {
   const gapWidth = runtime.gapWidth ?? config.gapWidth;
   const barrierX = scenario.id === 'budding' ? 602 : scenario.id === 'leader-follower' ? 560 : 548;
   const obstacles = [];
+  const guidanceObstacles = [];
   const openings = [];
 
   if (scenario.geometryKind === 'single-barrier' || scenario.geometryKind === 'soft-boundary') {
     const gapY = scenario.id === 'budding' ? 250 : 270;
     const half = gapWidth / 2;
-    obstacles.push({ x: barrierX - 7, y: 0, width: 14, height: gapY - half, kind: 'wall' });
-    obstacles.push({ x: barrierX - 7, y: gapY + half, width: 14, height: height - gapY - half, kind: 'wall' });
+    const segments = [
+      { x: barrierX - 7, y: 0, width: 14, height: gapY - half, kind: 'wall' },
+      { x: barrierX - 7, y: gapY + half, width: 14, height: height - gapY - half, kind: 'wall' }
+    ];
+    guidanceObstacles.push(...segments);
+    if (scenario.geometryKind !== 'soft-boundary') obstacles.push(...segments);
     openings.push({ x: barrierX, y: gapY, width: 26, height: gapWidth });
   } else if (scenario.geometryKind === 'branching-barrier') {
     const gapA = 188;
@@ -138,7 +143,11 @@ export function buildGeometry(scenario, config, runtime = {}) {
       [gapB + half, height]
     ];
     for (const [start, end] of segments) {
-      if (end > start) obstacles.push({ x: barrierX - 7, y: start, width: 14, height: end - start, kind: 'wall' });
+      if (end > start) {
+        const segment = { x: barrierX - 7, y: start, width: 14, height: end - start, kind: 'wall' };
+        obstacles.push(segment);
+        guidanceObstacles.push(segment);
+      }
     }
     openings.push({ x: barrierX, y: gapA, width: 26, height: gapWidth });
     openings.push({ x: barrierX, y: gapB, width: 26, height: gapWidth });
@@ -146,8 +155,10 @@ export function buildGeometry(scenario, config, runtime = {}) {
     const channelWidth = gapWidth + (runtime.channelRelease ?? 0);
     const top = 270 - channelWidth / 2;
     const bottom = 270 + channelWidth / 2;
-    obstacles.push({ x: 470, y: 0, width: 290, height: Math.max(0, top), kind: 'matrix' });
-    obstacles.push({ x: 470, y: bottom, width: 290, height: Math.max(0, height - bottom), kind: 'matrix' });
+    const upper = { x: 470, y: 0, width: 290, height: Math.max(0, top), kind: 'matrix' };
+    const lower = { x: 470, y: bottom, width: 290, height: Math.max(0, height - bottom), kind: 'matrix' };
+    obstacles.push(upper, lower);
+    guidanceObstacles.push(upper, lower);
     openings.push({ x: 615, y: 270, width: 290, height: channelWidth });
   }
 
@@ -157,12 +168,13 @@ export function buildGeometry(scenario, config, runtime = {}) {
     height,
     barrierX,
     obstacles,
+    guidanceObstacles: guidanceObstacles.length ? guidanceObstacles : obstacles,
     openings,
     targetPoints: scenario.targetPoints,
     labels: {
       left: scenario.id === 'budding' ? '肿瘤主体' : '细胞群',
       obstacle: scenario.id === 'unjamming' ? '受压缩通道' : scenario.id === 'leader-follower' ? '分叉屏障' : '组织边界',
-      source: '迁移偏置 →'
+      source: '扩散型引导场 →'
     }
   };
 }

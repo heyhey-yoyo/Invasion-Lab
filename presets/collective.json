@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 4,
   "id": "collective",
   "name": "协同推进者",
   "presetId": "collective",

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 4,
   "id": "escape",
   "name": "随机探索者",
   "presetId": "escape",

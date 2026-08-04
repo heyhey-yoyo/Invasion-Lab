@@ -6,6 +6,8 @@ test('batch map runs real multi-seed simulations and returns consensus summaries
   const result = runBatchScan({ scenarioId: 'narrow-gap', seed: 123 }, { size: 3, seedCount: 2, maxTime: 8, cellCount: 24 });
   assert.equal(result.points.length, 9);
   assert.equal(result.seedCount, 2);
+  assert.equal(result.baseConfig.scenarioId, 'narrow-gap');
+  assert.equal(result.baseConfig.seed, 123);
   for (const point of result.points) {
     assert.ok(point.consensus >= 0.5 && point.consensus <= 1);
     assert.ok(point.meanPassRate >= 0 && point.meanPassRate <= 1);

@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; worker-src 'self'; img-src 'self' data: blob:; connect-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'; frame-ancestors 'none'" />
   <meta name="description" content="在浏览器中探索癌细胞群体怎样在几何和力学约束下发生拥堵、集体推进、肿瘤出芽、leader 引导和解堵。" />
-  <title>Invasion Wind Tunnel 2｜肿瘤侵袭风洞</title>
+  <title>Invasion Wind Tunnel 4｜多尺度肿瘤侵袭实验台</title>
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="icon" href="./assets/icon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="./styles.css" />
@@ -17,7 +17,7 @@
   <header class="topbar">
     <div class="brand" aria-label="Invasion Wind Tunnel 首页">
       <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
-      <span><strong>Invasion Wind Tunnel 2</strong><small>肿瘤侵袭风洞</small></span>
+      <span><strong>Invasion Wind Tunnel 4</strong><small>多尺度肿瘤侵袭实验台</small></span>
     </div>
     <nav class="mode-tabs" role="tablist" aria-label="使用模式">
       <button type="button" class="mode-tab is-active" role="tab" aria-selected="true" data-mode="play">Play <span>试玩</span></button>
@@ -46,36 +46,37 @@
 
       <section class="panel-section" data-visible-mode="play explore lab">
         <div class="section-heading">
-          <h2>行为人格</h2>
+          <h2>实验预设</h2>
           <span class="step-badge">2</span>
         </div>
-        <div id="presetGrid" class="preset-grid" role="radiogroup" aria-label="细胞行为人格"></div>
+        <div id="presetGrid" class="preset-grid" role="radiogroup" aria-label="细胞实验预设"></div>
       </section>
 
       <section id="exploreControls" class="panel-section mode-only" data-visible-mode="explore lab" hidden>
         <div class="section-heading">
-          <h2>生物学倾向</h2>
+          <h2>3 项核心倾向</h2>
           <span class="step-badge">3</span>
         </div>
         <div class="semantic-controls">
           <fieldset>
-            <legend>细胞黏附</legend>
+            <legend>细胞连接强度</legend>
             <div class="segmented" data-control="adhesion">
-              <button type="button" aria-pressed="false" data-value="0.2">松散</button><button type="button" aria-pressed="false" data-value="0.55">平衡</button><button type="button" aria-pressed="false" data-value="0.88">紧密</button>
+              <button type="button" aria-pressed="false" data-value="0.2">弱</button><button type="button" aria-pressed="false" data-value="0.55">中</button><button type="button" aria-pressed="false" data-value="0.88">强</button>
             </div>
           </fieldset>
           <fieldset>
-            <legend>形变能力</legend>
+            <legend>细胞柔顺性</legend>
             <div class="segmented" data-control="deformability">
-              <button type="button" aria-pressed="false" data-value="0.18">僵硬</button><button type="button" aria-pressed="false" data-value="0.55">一般</button><button type="button" aria-pressed="false" data-value="0.9">柔软</button>
+              <button type="button" aria-pressed="false" data-value="0.18">低</button><button type="button" aria-pressed="false" data-value="0.55">中</button><button type="button" aria-pressed="false" data-value="0.9">高</button>
             </div>
           </fieldset>
           <fieldset>
-            <legend>群体协同</legend>
+            <legend>群体引导</legend>
             <div class="segmented" data-control="alignment">
-              <button type="button" aria-pressed="false" data-value="0.15">独立</button><button type="button" aria-pressed="false" data-value="0.55">跟随</button><button type="button" aria-pressed="false" data-value="0.9">一致</button>
+              <button type="button" aria-pressed="false" data-value="0.15">弱</button><button type="button" aria-pressed="false" data-value="0.55">中</button><button type="button" aria-pressed="false" data-value="0.9">强</button>
             </div>
           </fieldset>
+          <p class="calibration-note">其余膜张力、核刚度、阻尼和扩散参数采用固定校准值，避免参数过载。</p>
           <label class="range-row">
             <span><span id="geometryControlLabel">缺口宽度</span> <output id="gapOutput" for="gapRange">39 px</output></span>
             <input id="gapRange" type="range" min="22" max="140" step="1" value="39" />
@@ -92,15 +93,20 @@
           <label>随机种子<input id="seedInput" type="number" min="1" max="4294967295" value="20260803" /></label>
           <label>细胞数量<input id="cellCountInput" type="number" min="24" max="140" value="68" /></label>
           <label>实验时长（模拟秒）<input id="durationInput" type="number" min="12" max="120" value="42" /></label>
-          <label>地图网格<input id="mapSizeInput" type="number" min="3" max="7" value="5" /></label>
-          <label>每格随机种子<input id="mapSeedsInput" type="number" min="2" max="5" value="3" /></label>
         </div>
         <div class="hash-card" aria-label="可复现性标识">
           <span>Config hash</span><code id="configHash">—</code>
           <span>Scenario hash</span><code id="scenarioHash">—</code>
         </div>
+        <div class="comparison-builder">
+          <label>单因素虚拟处理
+            <select id="comparisonTreatment" aria-describedby="comparisonHelp"></select>
+          </label>
+          <button type="button" id="runComparison" class="secondary-button">运行 5 组配对对照</button>
+          <p id="comparisonHelp">自动保持相同场景、预设与随机种子；只改变一个机制因素，不增加底层参数滑块。</p>
+        </div>
         <div class="inline-actions">
-          <button type="button" id="openMap" class="secondary-button">运行批量侵袭地图</button>
+          <button type="button" id="openMap" class="secondary-button">运行固定规格侵袭地图</button>
           <button type="button" id="copyConfig" class="secondary-button">复制参数 JSON</button>
         </div>
       </section>
@@ -114,7 +120,7 @@
     <section id="experiment-stage" class="stage-panel" aria-label="模拟实验场">
       <div class="stage-toolbar">
         <div class="live-status" role="status" aria-live="polite" aria-atomic="true"><span id="statusDot" class="status-dot"></span><span id="stageStatus">已加载推荐实验，等待开始</span></div>
-        <div class="stage-meta"><span id="scenarioBadge">狭窄缺口</span><span id="seedBadge">Seed 20260803</span><span id="modelBadge">Model 2.0</span></div>
+        <div class="stage-meta"><span id="scenarioBadge">狭窄缺口</span><span id="seedBadge">Seed 20260803</span><span id="modelBadge">Model 4.0</span></div>
       </div>
       <div id="canvasWrap" class="canvas-wrap">
         <canvas id="simulationCanvas" width="960" height="540" aria-label="癌细胞群体侵袭实时模拟">当前浏览器不支持 Canvas，无法显示模拟画面。</canvas>
@@ -154,6 +160,7 @@
         <div id="observation-title" class="eyebrow">现在发生什么</div>
         <p id="observationText">细胞群处于稳定初始状态，等待启动。</p>
         <div class="observation-detail"><span>主要限制因素</span><strong id="limitingFactor">几何—力学平衡</strong></div>
+        <ol id="explanationFactors" class="factor-list" aria-label="机制解释因素"></ol>
       </section>
 
       <section class="metrics-section" aria-labelledby="metrics-title">
@@ -197,24 +204,35 @@
   <dialog id="scienceDialog" class="dialog-card" aria-labelledby="scienceDialogTitle">
     <form method="dialog"><button type="submit" class="dialog-close" aria-label="关闭">×</button></form>
     <div class="eyebrow">Scientific scope</div>
-    <h2 id="scienceDialogTitle">v2 模型、假设与可信边界</h2>
+    <h2 id="scienceDialogTitle">v4 模型、假设与可信边界</h2>
     <div class="dialog-columns">
-      <section><h3>模块化场景层</h3><p>场景只定义初始布局、几何、目标、扰动和判定语义；同一套方向与力学引擎运行狭窄缺口、出芽、leader–follower 和解堵实验。</p></section>
-      <section><h3>方向与力学层</h3><p>方向层组合持续性、邻居对齐、趋化、leader 影响和噪声；力学层处理排斥、黏附、有限形变与矩形组织障碍。</p></section>
-      <section><h3>批量侵袭地图</h3><p>地图不再使用静态经验着色，而是对每个格点运行多个随机种子，显示主导结果与种子一致度。</p></section>
-      <section><h3>可复现性</h3><p>每个结果保存应用、模型、场景版本，配置哈希、场景哈希、随机种子、扰动和事件时间线。</p></section>
+      <section><h3>细胞—细胞核—ECM</h3><p>每个细胞使用面积守恒形状张量，包含更硬且响应更慢的细胞核，并与低分辨率、可降解和可重塑的 ECM 场耦合。</p></section>
+      <section><h3>动态 Leader 与状态</h3><p>Leader 不再主要依赖预设身份，而由前缘位置、Follower 拉力、局部牵引和应激竞争产生；方向信息沿接触网络传播。</p></section>
+      <section><h3>有限但可解释的参数</h3><p>Explore 模式仍只暴露连接强度、细胞柔顺性、群体引导和一个场景几何量。ECM、核刚度和状态转换常数保持隐藏。</p></section>
+      <section><h3>配对虚拟实验</h3><p>Lab 模式可用固定的五组配对种子比较单一处理因素，并报告均值差、95% 探索性 t 区间和观察窗内右删失计数；它不是临床统计检验。</p></section>
     </div>
-    <p class="dialog-note">当前仍是自研二维软粒子近似模型，不是 Cellular Potts Model，也不是患者特异模型。参数均为简化、归一化参数；任何科学结论都需要独立实验验证。</p>
+    <p class="dialog-note">当前是二维多尺度机制近似，不是完整 Cellular Potts、相场、有限元、三维组织或患者特异模型。ECM 降解、牵引、接触长度和状态转换均为归一化代理量；任何科学结论都需要独立实验验证。</p>
   </dialog>
 
   <dialog id="mapDialog" class="dialog-card map-dialog" aria-labelledby="mapDialogTitle">
     <form method="dialog"><button type="submit" class="dialog-close" aria-label="关闭">×</button></form>
     <div class="eyebrow">Multi-seed invasion map</div>
     <h2 id="mapDialogTitle">批量侵袭地图</h2>
-    <p id="mapSubtitle">横轴为黏附，纵轴为形变。每个格点运行多个随机种子。</p>
+    <p id="mapSubtitle">横轴为细胞连接，纵轴为细胞柔顺性。每个格点运行多个随机种子。</p>
     <div id="mapProgress" class="map-progress" role="status" aria-live="polite"></div>
     <div id="mapLegend" class="map-legend"></div>
     <div id="invasionMap" class="invasion-map" aria-label="二维侵袭模式地图"></div>
+  </dialog>
+
+
+  <dialog id="comparisonDialog" class="dialog-card comparison-dialog" aria-labelledby="comparisonDialogTitle">
+    <form method="dialog"><button type="submit" class="dialog-close" aria-label="关闭">×</button></form>
+    <div class="eyebrow">Paired virtual experiment</div>
+    <h2 id="comparisonDialogTitle">配对对照实验</h2>
+    <p id="comparisonProgress" role="status" aria-live="polite">尚未运行。</p>
+    <div id="comparisonSummary" class="comparison-summary"></div>
+    <div id="comparisonMetrics" class="comparison-metrics"></div>
+    <p class="dialog-note">使用相同的五个随机种子分别运行对照与处理。95% 探索性 t 区间用于观察模型内跨种子稳定性；未在观察窗内通过的样本按右删失单独计数。两者都不代表临床置信区间或实验显著性。</p>
   </dialog>
 
   <dialog id="keyboardDialog" class="dialog-card keyboard-dialog" aria-labelledby="keyboardDialogTitle">

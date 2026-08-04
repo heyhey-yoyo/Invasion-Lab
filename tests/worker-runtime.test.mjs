@@ -46,3 +46,16 @@ test('single-step mode emits completion result when the step finishes the run', 
   while (!runtime.engine.finished) runtime.handle({ type: 'step' }, 0);
   assert.equal(messages.filter(message => message.type === 'result').length, 1);
 });
+
+
+test('worker messages are correlated to the active run and stale commands are ignored', () => {
+  const messages = [];
+  const runtime = new SimulationWorkerRuntime(message => messages.push(message));
+  runtime.handle({ type: 'init', runId: 7, config: { scenarioId: 'narrow-gap', maxTime: 12 } }, 0);
+  const initialTime = runtime.engine.time;
+  runtime.handle({ type: 'step', runId: 6 }, 0);
+  assert.equal(runtime.engine.time, initialTime);
+  runtime.handle({ type: 'step', runId: 7 }, 0);
+  assert.ok(runtime.engine.time > initialTime);
+  assert.ok(messages.every(message => message.runId === 7));
+});

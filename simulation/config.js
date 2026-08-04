@@ -1,5 +1,6 @@
 import { fnv1a32 } from './core/hash.js';
 import { LEGACY_PRESET_ALIASES, PRESETS } from './profiles.js';
+import { INTERVENTIONS } from './interventions.js';
 import { DEFAULT_SCENARIO_ID, getScenario, SCENARIOS } from './scenarios/catalog.js';
 import {
   APP_VERSION,
@@ -19,6 +20,10 @@ function normalizeSeed(value) {
   const numeric = Number(value);
   if (!Number.isFinite(numeric)) return 20260803;
   return Math.trunc(clamp(numeric, 1, 0xFFFFFFFF));
+}
+
+function normalizeInterventionId(value) {
+  return typeof value === 'string' && INTERVENTIONS[value] ? value : 'control';
 }
 
 function normalizePresetId(value, fallback) {
@@ -51,6 +56,7 @@ export function makeConfig(input = {}) {
     cellCount: Math.round(numberInRange(input.cellCount, scenario.defaultCellCount, 24, 140)),
     maxTime: numberInRange(input.maxTime, scenario.defaultMaxTime, 12, 120),
     leaderMode: typeof input.leaderMode === 'boolean' ? input.leaderMode : preset.leaderMode,
+    interventionId: normalizeInterventionId(input.interventionId),
     seed: normalizeSeed(input.seed),
     appVersion: APP_VERSION,
     modelVersion: MODEL_VERSION,
@@ -77,6 +83,7 @@ export function migrateConfig(input = {}) {
   return makeConfig({
     ...input,
     scenarioId: input.scenarioId || DEFAULT_SCENARIO_ID,
-    presetId: input.presetId || 'collective'
+    presetId: input.presetId || 'collective',
+    interventionId: input.interventionId || 'control'
   });
 }

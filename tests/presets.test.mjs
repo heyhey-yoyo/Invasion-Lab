@@ -25,7 +25,7 @@ test('the four behavior personalities preserve four distinct narrow-gap outcomes
   }
 });
 
-test('all four v2 scenarios complete with finite common and scenario metrics', () => {
+test('all four v4 scenarios complete with finite common and scenario metrics', () => {
   for (const scenario of Object.values(SCENARIOS)) {
     const { result } = run({ scenarioId: scenario.id, presetId: scenario.defaultPresetId });
     for (const key of ['passRate', 'integrity', 'meanPressure', 'meanSpeed', 'mobilityIndex', 'frontPosition']) {

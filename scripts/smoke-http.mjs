@@ -29,6 +29,8 @@ try {
     ['/', 200, 'text/html'],
     ['/app.js', 200, 'text/javascript'],
     ['/simulation/worker.js', 200, 'text/javascript'],
+    ['/simulation/comparison-worker.js', 200, 'text/javascript'],
+    ['/simulation/core/ecm-field.js', 200, 'text/javascript'],
     ['/simulation/scenarios/catalog.js', 200, 'text/javascript'],
     ['/manifest.webmanifest', 200, 'application/manifest+json'],
     ['/service-worker.js', 200, 'text/javascript'],

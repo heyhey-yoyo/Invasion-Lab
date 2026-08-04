@@ -61,6 +61,7 @@ export function runBatchScan(inputConfig, options = {}, onProgress = null) {
     seedCount,
     scenarioId: base.scenarioId,
     configHash: base.configHash,
+    baseConfig: base,
     axes: { x: 'adhesion', y: 'deformability' },
     points
   };

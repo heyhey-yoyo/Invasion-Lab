@@ -1,71 +1,59 @@
-# v2.0 架构说明
+# v4.0 架构说明
 
 ## 目标
 
-v2 的架构目标不是“支持任意生物模型”，而是让四个明确场景共享可测试、可替换的核心边界：
+v4 保持纯静态、零运行时依赖、固定种子确定性和少参数 UI，同时将环境从静态障碍升级为可交互 ECM，并加入动态 Leader 与可复现的单因素对照。
 
-1. 配置与版本；
-2. 场景定义；
-3. 方向—力学引擎；
-4. 事件与指标；
-5. 结果分类与解释；
-6. Worker 调度；
-7. 批量运行；
-8. UI、回放与导出。
+## 模块边界
+
+- `simulation/engine.js`：位置、速度、形状、细胞核、接触网络、状态和 Leader 更新。
+- `simulation/core/ecm-field.js`：低分辨率 ECM 密度、损伤、应变、纤维方向和双向作用。
+- `simulation/core/spatial-hash.js`：确定性空间哈希，降低全量邻居搜索成本。
+- `simulation/interventions.js`：离散处理定义，不暴露底层常数。
+- `simulation/comparison.js`：相同随机种子下的对照/处理配对模拟与探索性汇总。
+- `simulation/comparison-worker.js`：独立运行配对实验，避免阻塞 UI。
+- `simulation/core/deformable-cell.js`：面积守恒椭圆、支撑半径、周长和障碍接触。
+- `simulation/core/guidance-field.js`：稳态扩散型标量场及梯度采样。
+- `simulation/scenarios/catalog.js`：场景初态、几何、目标、扰动和指标语义。
+- `simulation/worker-runtime.js`：固定步长、播放速度和最终结果 exactly-once。
+- `app.js`：UI、机制/显微视图、ECM/细胞渲染、回放、导出、批量地图与对照实验。
+
+## 帧格式
+
+v4 stride 为 20：
+
+```text
+0 x                         10 branch
+1 y                         11 shapeAngle
+2 vx                        12 nucleusStrain
+3 vy                        13 contactCount
+4 contactStressProxy        14 stateCode
+5 passed                    15 normalizedTraction
+6 isLeader                  16 localECMDensity
+7 shapeStrain               17 localECMDamage
+8 isolated                  18 collectiveSignalStrength
+9 cohort                    19 highNuclearStrainDuration
+```
+
+每帧还包含 `ecm`：`columns`、`rows`、`cellSize` 和四通道 `Uint8Array packed`（密度、损伤、纤维 x、纤维 y）。
 
 ## 数据流
 
-```text
-UI selection
-  → makeConfig()
-  → Simulation Worker init
-  → SimulationEngine
-  → scenario geometry + direction/force update
-  → frame + events + metrics
-  → UI rendering / replay
-  → scenario-aware outcome
-  → JSON / CSV / local project
+1. UI 通过 `makeConfig()` 生成版本化配置；
+2. 实时 Worker 构建场景、引导场和 ECM；
+3. 固定 `1/30` 模拟秒更新细胞与低频 ECM；
+4. Worker 传输细胞 Float32 帧和压缩 ECM Uint8 帧；
+5. UI 从同一模型状态绘制边界、细胞核、应力、状态和 ECM；
+6. Lab 对照由独立 comparison Worker 用配对种子顺序运行，避免与实时 Worker 共享状态。
 
-Lab batch request
-  → dedicated Batch Worker
-  → runBatchScan()
-  → point-level progress + multi-seed consensus map
-```
+## 性能策略
 
-## 边界职责
+- 空间哈希生成确定性候选邻居对；
+- 每个细胞只保存低维形状张量，而非整张相场；
+- ECM 使用 20 px 网格并以 TypedArray 存储；
+- ECM 松弛和快照与细胞积分分离；
+- Worker 限制每 tick 最大步数；
+- 对照实验固定 3–7 个种子，默认 5 个；
+- 批量模式降低细胞数和最大时间。
 
-### `scenarios/catalog.js`
-
-定义场景名称、问题、默认值、初始中心、几何类型、迁移目标、扰动按钮和指标文案。它不实现积分器，也不直接操作 DOM。
-
-### `config.js`
-
-负责输入清洗、范围限制、v1 迁移、版本字段、配置哈希与场景哈希。所有入口都必须经过 `makeConfig()`。
-
-### `engine.js`
-
-唯一的位置和速度更新引擎。场景通过几何和少量规则参数影响引擎；方向层不会绕过力学层直接修改位置。
-
-### `outcomes.js`
-
-结果分类是场景感知的。同一组通用指标在不同场景下可以映射为不同的教学模式，例如 `leader-guided` 或 `unjamming`。
-
-### `batch.js` 与 `batch-worker.js`
-
-对每个参数格点运行多个真实模拟，而不是调用静态启发式着色。批量运行降低细胞数与时长，返回主导模式、一致度和均值指标。独立 Batch Worker 与实时 Simulation Worker 隔离，避免参数扫描阻塞实验时间推进，并在每个格点结束后发送进度。
-
-### `worker-runtime.js`
-
-使用固定 `1/30` 模拟秒时间步和真实经过时间累积。限制单次 tick 最大步数，避免浏览器恢复前台时出现巨量追帧。
-
-## 可替换性
-
-未来接入 Artistoo 时，推荐保留以下接口：
-
-- `SimulationEngine(config)`；
-- `step(dt)`；
-- `applyPerturbation(type)`；
-- `getFrame()`；
-- `getResult()`。
-
-UI、Worker、批量地图、迁移和导出可继续复用。Artistoo 适配层必须明确说明与当前软粒子模型在形态、黏附和连通性定义上的差异。
+任何帧字段、schema 或随机调用顺序变更都必须升级版本并补充确定性测试。

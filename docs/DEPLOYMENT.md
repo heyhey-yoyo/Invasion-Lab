@@ -1,4 +1,4 @@
-# v2.0 部署说明
+# v4.0 部署说明
 
 验证日期：2026-08-04
 
@@ -13,7 +13,7 @@ npm run check
 - 环境变量：无
 - 后端、数据库、Functions：无
 
-部署后至少检查：主页、`app.js`、两个 Worker、manifest、Service Worker、四个场景、一次扰动、结果导出和 `404.html`。
+部署后至少检查：主页、`app.js`、三个 Worker、manifest、Service Worker、四个场景、一次扰动、结果导出和 `404.html`。
 
 ## Cloudflare Pages
 

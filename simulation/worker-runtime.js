@@ -20,11 +20,13 @@ export class SimulationWorkerRuntime {
     this.lastTickMs = null;
     this.accumulator = 0;
     this.resultSent = false;
+    this.runId = null;
   }
 
   handle(message = {}, nowMs = 0) {
     switch (message.type) {
       case 'init':
+        this.runId = message.runId ?? null;
         this.engine = new SimulationEngine(message.config);
         this.running = false;
         this.lastEventCount = 0;
@@ -34,6 +36,7 @@ export class SimulationWorkerRuntime {
         this.#sendFrame();
         break;
       case 'start':
+        if (message.runId !== undefined && message.runId !== this.runId) break;
         if (!this.engine || this.engine.finished) break;
         this.running = true;
         this.speed = normalizePlaybackSpeed(message.speed ?? this.speed);
@@ -41,24 +44,29 @@ export class SimulationWorkerRuntime {
         this.accumulator = 0;
         break;
       case 'pause':
+        if (message.runId !== undefined && message.runId !== this.runId) break;
         this.running = false;
         this.lastTickMs = null;
         this.accumulator = 0;
         break;
       case 'speed':
+        if (message.runId !== undefined && message.runId !== this.runId) break;
         this.speed = normalizePlaybackSpeed(message.speed);
         break;
       case 'step':
+        if (message.runId !== undefined && message.runId !== this.runId) break;
         if (this.engine && !this.running && !this.engine.finished) {
           this.engine.step(SIMULATION_STEP_SECONDS);
           this.#sendFrame();
         }
         break;
       case 'perturb':
+        if (message.runId !== undefined && message.runId !== this.runId) break;
         if (this.engine?.applyPerturbation(message.perturbation)) this.#sendFrame();
         break;
       case 'result':
-        if (this.engine) this.send({ type: 'result', result: this.engine.getResult() });
+        if (message.runId !== undefined && message.runId !== this.runId) break;
+        if (this.engine) this.send({ type: 'result', runId: this.runId, result: this.engine.getResult() });
         break;
     }
   }
@@ -91,14 +99,16 @@ export class SimulationWorkerRuntime {
     const frame = this.engine.getFrame();
     const newEvents = this.engine.events.slice(this.lastEventCount);
     this.lastEventCount = this.engine.events.length;
-    this.send({ type: 'frame', data: frame.data, meta: frame.meta, events: newEvents }, [frame.data.buffer]);
+    const transfer = [frame.data.buffer];
+    if (frame.ecm?.packed?.buffer) transfer.push(frame.ecm.packed.buffer);
+    this.send({ type: 'frame', runId: this.runId, data: frame.data, ecm: frame.ecm, meta: frame.meta, events: newEvents }, transfer);
 
     if (this.engine.finished && !this.resultSent) {
       this.resultSent = true;
       this.running = false;
       this.lastTickMs = null;
       this.accumulator = 0;
-      this.send({ type: 'result', result: this.engine.getResult() });
+      this.send({ type: 'result', runId: this.runId, result: this.engine.getResult() });
     }
   }
 
