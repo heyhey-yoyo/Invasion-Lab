@@ -97,3 +97,26 @@ v4 破坏性格式变化：
 ## 许可证与参考实现
 
 项目代码使用 MIT License，运行时为零第三方依赖。v4 参考了 Cellular Potts、可变形粒子、集体迁移、动态 Leader 和可降解 ECM 文献的机制设计，但没有嵌入 Artistoo 或其他模拟框架源码。详见 `THIRD_PARTY_NOTICES.md` 与 `docs/REFERENCES.md`。
+
+## 数据与隐私
+
+- 所有模拟与计算结果仅在浏览器本地运行，不会上传至任何服务器；
+- 项目数据只保存在浏览器 `localStorage`（保存键 `iwt-project-v4`），可随时清除；
+- 运行时不发起任何网络请求，无远程依赖。
+
+---
+
+> AI 编程代理请阅读 [AGENTS.md](./AGENTS.md) 了解代码架构、测试策略与开发约定。
+
+---
+
+## AI 维护提醒
+
+> **⚠️ 任何修改此项目的 AI 代理（Claude Code、Cursor、Copilot 等）都必须同步更新本文件与 AGENTS.md。**
+>
+> - 新增功能 → 在 README 的"v4 主要升级"或相应章节中添加用户可理解的说明
+> - 新增/删除文件 → 更新本文和 AGENTS.md 中的文件清单与模型结构图
+> - 修改架构 → 更新 AGENTS.md 的架构边界说明
+> - 变更帧 stride 或结果 schema → 同步升级 `simulation/versions.js` 并更新迁移文档
+> - 部署方式变更 → 同步更新本文部署章节
+> - 保持 **README 面向人类用户**，**AGENTS.md 面向 AI 代理**，两份文件不可互相替代
