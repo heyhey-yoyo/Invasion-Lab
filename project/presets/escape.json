@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 2,
+  "id": "escape",
+  "name": "随机探索者",
+  "presetId": "escape",
+  "adhesion": 0.18,
+  "deformability": 0.92,
+  "alignment": 0.22,
+  "persistence": 0.84,
+  "noise": 0.2,
+  "speed": 28,
+  "leaderMode": false
+}

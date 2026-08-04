@@ -1,0 +1,30 @@
+{
+  "name": "Invasion Wind Tunnel",
+  "version": "2.0.0",
+  "releaseDate": "2026-08-04",
+  "deploymentDirectory": "dist",
+  "runtimeDependencies": 0,
+  "automatedTests": 22,
+  "testsPassed": 22,
+  "scenarios": [
+    "narrow-gap",
+    "budding",
+    "leader-follower",
+    "unjamming"
+  ],
+  "validation": [
+    "unique HTML IDs, ARIA references, explicit button types, manifest icons, and local assets",
+    "JavaScript syntax for all source modules",
+    "deterministic seeded simulation and stable configuration/scenario hashes",
+    "scenario-aware geometry, event detection, outcomes, and perturbations",
+    "fixed-timestep worker runtime and exactly-once final result delivery",
+    "real multi-seed batch maps with consensus summaries",
+    "dedicated batch worker with point-level progress, isolated from the live simulation worker",
+    "v1 configuration migration into the v2 schema",
+    "static build, service-worker inventory, and HTTP smoke checks",
+    "credential-pattern and local secret-file scan"
+  ],
+  "scientificStatus": "qualitative mechanism demonstrator; not a clinical prediction tool",
+  "staticAssetFiles": 30,
+  "browserAutomationStatus": "Chromium binary present, but automated headless execution is blocked by the current managed environment; no browser result is claimed."
+}

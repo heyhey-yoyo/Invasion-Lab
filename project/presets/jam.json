@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 2,
+  "id": "jam",
+  "name": "紧密拥堵者",
+  "presetId": "jam",
+  "adhesion": 0.94,
+  "deformability": 0.08,
+  "alignment": 0.82,
+  "persistence": 0.68,
+  "noise": 0.05,
+  "speed": 20,
+  "leaderMode": false
+}

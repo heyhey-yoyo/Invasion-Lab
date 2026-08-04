@@ -1,0 +1,22 @@
+{
+  "name": "invasion-wind-tunnel",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A deployable, front-end-only, multi-scenario laboratory for qualitative cancer-cell collective invasion experiments.",
+  "scripts": {
+    "dev": "npm run build && node scripts/serve.mjs dist 4173",
+    "preview": "node scripts/serve.mjs dist 4173",
+    "build": "node scripts/build.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "check": "npm run validate && npm run scan && npm run test && npm run build && npm run smoke",
+    "validate": "node scripts/validate-static.mjs",
+    "test:scenarios": "node --test tests/presets.test.mjs",
+    "test:batch": "node --test tests/batch.test.mjs",
+    "smoke": "node scripts/smoke-http.mjs",
+    "scan": "node scripts/scan-sensitive.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

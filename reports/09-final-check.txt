@@ -1,0 +1,170 @@
+
+> invasion-wind-tunnel@2.0.0 check
+> npm run validate && npm run scan && npm run test && npm run build && npm run smoke
+
+
+> invasion-wind-tunnel@2.0.0 validate
+> node scripts/validate-static.mjs
+
+Validated 85 unique ids, 3 manifest icons, 27 offline assets, 16 JavaScript files, and 22 declared tests.
+
+> invasion-wind-tunnel@2.0.0 scan
+> node scripts/scan-sensitive.mjs
+
+Sensitive-file scan passed for 56 text files; no credential patterns or local secret files found.
+
+> invasion-wind-tunnel@2.0.0 test
+> node --test tests/*.test.mjs
+
+TAP version 13
+# Subtest: batch map runs real multi-seed simulations and returns consensus summaries
+ok 1 - batch map runs real multi-seed simulations and returns consensus summaries
+  ---
+  duration_ms: 413.717479
+  type: 'test'
+  ...
+# Subtest: batch scan is deterministic for the same base configuration
+ok 2 - batch scan is deterministic for the same base configuration
+  ---
+  duration_ms: 483.9623
+  type: 'test'
+  ...
+# Subtest: batch scan keeps the selected scenario and produces more than one regime
+ok 3 - batch scan keeps the selected scenario and produces more than one regime
+  ---
+  duration_ms: 288.853251
+  type: 'test'
+  ...
+# Subtest: batch scan reports monotonic point-level progress
+ok 4 - batch scan reports monotonic point-level progress
+  ---
+  duration_ms: 242.673708
+  type: 'test'
+  ...
+# Subtest: v2 configuration is sanitized, scenario-aware, hashed, and versioned
+ok 5 - v2 configuration is sanitized, scenario-aware, hashed, and versioned
+  ---
+  duration_ms: 1.105127
+  type: 'test'
+  ...
+# Subtest: configuration hashes are stable and change with scientific inputs
+ok 6 - configuration hashes are stable and change with scientific inputs
+  ---
+  duration_ms: 0.816529
+  type: 'test'
+  ...
+# Subtest: v1 configuration migrates to the v2 narrow-gap schema
+ok 7 - v1 configuration migrates to the v2 narrow-gap schema
+  ---
+  duration_ms: 0.191955
+  type: 'test'
+  ...
+# Subtest: scenario-aware classifier covers new v2 modes
+ok 8 - scenario-aware classifier covers new v2 modes
+  ---
+  duration_ms: 0.49339
+  type: 'test'
+  ...
+# Subtest: engine remains deterministic for the same v2 configuration
+ok 9 - engine remains deterministic for the same v2 configuration
+  ---
+  duration_ms: 212.181089
+  type: 'test'
+  ...
+# Subtest: engine stops exactly at a non-frame-aligned maximum time
+ok 10 - engine stops exactly at a non-frame-aligned maximum time
+  ---
+  duration_ms: 145.041842
+  type: 'test'
+  ...
+# Subtest: only one scenario perturbation is accepted per run
+ok 11 - only one scenario perturbation is accepted per run
+  ---
+  duration_ms: 1.104646
+  type: 'test'
+  ...
+# Subtest: frame exposes versioned stride and serializable scenario geometry
+ok 12 - frame exposes versioned stride and serializable scenario geometry
+  ---
+  duration_ms: 0.678184
+  type: 'test'
+  ...
+# Subtest: the four behavior personalities preserve four distinct narrow-gap outcomes
+ok 13 - the four behavior personalities preserve four distinct narrow-gap outcomes
+  ---
+  duration_ms: 946.574984
+  type: 'test'
+  ...
+# Subtest: all four v2 scenarios complete with finite common and scenario metrics
+ok 14 - all four v2 scenarios complete with finite common and scenario metrics
+  ---
+  duration_ms: 861.205005
+  type: 'test'
+  ...
+# Subtest: default scenarios produce their intended teaching baselines
+ok 15 - default scenarios produce their intended teaching baselines
+  ---
+  duration_ms: 679.919663
+  type: 'test'
+  ...
+# Subtest: local release converts the unjamming baseline into a detected transition
+ok 16 - local release converts the unjamming baseline into a detected transition
+  ---
+  duration_ms: 269.881357
+  type: 'test'
+  ...
+# Subtest: leader removal is recorded and strong alignment can promote a replacement
+ok 17 - leader removal is recorded and strong alignment can promote a replacement
+  ---
+  duration_ms: 119.807103
+  type: 'test'
+  ...
+# Subtest: budding scenario emits an explicit bud event
+ok 18 - budding scenario emits an explicit bud event
+  ---
+  duration_ms: 133.314636
+  type: 'test'
+  ...
+# Subtest: playback speed is finite and bounded
+ok 19 - playback speed is finite and bounded
+  ---
+  duration_ms: 0.623784
+  type: 'test'
+  ...
+# Subtest: 0.5x, 1x, and 2x advance approximately their labelled simulation time
+ok 20 - 0.5x, 1x, and 2x advance approximately their labelled simulation time
+  ---
+  duration_ms: 56.399288
+  type: 'test'
+  ...
+# Subtest: worker emits a final frame and exactly one result for every scenario
+ok 21 - worker emits a final frame and exactly one result for every scenario
+  ---
+  duration_ms: 639.712273
+  type: 'test'
+  ...
+# Subtest: single-step mode emits completion result when the step finishes the run
+ok 22 - single-step mode emits completion result when the step finishes the run
+  ---
+  duration_ms: 63.177465
+  type: 'test'
+  ...
+1..22
+# tests 22
+# suites 0
+# pass 22
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3065.272433
+
+> invasion-wind-tunnel@2.0.0 build
+> node scripts/build.mjs
+
+Built static site at /mnt/data/iwt-v2-work/invasion-wind-tunnel/dist
+
+> invasion-wind-tunnel@2.0.0 smoke
+> node scripts/smoke-http.mjs
+
+HTTP smoke checks passed for 8 routes.

@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 2,
+  "id": "collective",
+  "name": "协同推进者",
+  "presetId": "collective",
+  "adhesion": 0.78,
+  "deformability": 0.82,
+  "alignment": 0.86,
+  "persistence": 0.8,
+  "noise": 0.06,
+  "speed": 25,
+  "leaderMode": true
+}

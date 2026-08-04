@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 2,
+  "id": "budding",
+  "name": "边缘出芽者",
+  "presetId": "budding",
+  "adhesion": 0.46,
+  "deformability": 0.72,
+  "alignment": 0.48,
+  "persistence": 0.78,
+  "noise": 0.18,
+  "speed": 25,
+  "leaderMode": true
+}

@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#081217" />
+  <meta name="referrer" content="no-referrer" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; worker-src 'self'; img-src 'self' data: blob:; connect-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'; frame-ancestors 'none'" />
+  <meta name="description" content="在浏览器中探索癌细胞群体怎样在几何和力学约束下发生拥堵、集体推进、肿瘤出芽、leader 引导和解堵。" />
+  <title>Invasion Wind Tunnel 2｜肿瘤侵袭风洞</title>
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" href="./assets/icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#experiment-stage">跳到实验场</a>
+  <header class="topbar">
+    <div class="brand" aria-label="Invasion Wind Tunnel 首页">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span><strong>Invasion Wind Tunnel 2</strong><small>肿瘤侵袭风洞</small></span>
+    </div>
+    <nav class="mode-tabs" role="tablist" aria-label="使用模式">
+      <button type="button" class="mode-tab is-active" role="tab" aria-selected="true" data-mode="play">Play <span>试玩</span></button>
+      <button type="button" class="mode-tab" role="tab" aria-selected="false" tabindex="-1" data-mode="explore">Explore <span>探索</span></button>
+      <button type="button" class="mode-tab" role="tab" aria-selected="false" tabindex="-1" data-mode="lab">Lab <span>实验室</span></button>
+    </nav>
+    <div class="top-actions">
+      <button type="button" id="openScience" class="text-button">模型与边界</button>
+      <button type="button" id="installApp" class="text-button" hidden>安装应用</button>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <aside class="control-panel" aria-labelledby="experiment-title">
+      <div id="experimentEyebrow" class="eyebrow">Narrow-gap transit</div>
+      <h1 id="experiment-title">细胞会堵住，还是穿过去？</h1>
+      <p id="experimentLede" class="lede">选择实验问题与行为倾向，启动实验，并在运行中施加一次扰动。</p>
+
+      <section class="panel-section" data-visible-mode="play explore lab">
+        <div class="section-heading">
+          <h2>实验问题</h2>
+          <span class="step-badge">1</span>
+        </div>
+        <div id="scenarioGrid" class="scenario-grid" role="radiogroup" aria-label="实验场景"></div>
+      </section>
+
+      <section class="panel-section" data-visible-mode="play explore lab">
+        <div class="section-heading">
+          <h2>行为人格</h2>
+          <span class="step-badge">2</span>
+        </div>
+        <div id="presetGrid" class="preset-grid" role="radiogroup" aria-label="细胞行为人格"></div>
+      </section>
+
+      <section id="exploreControls" class="panel-section mode-only" data-visible-mode="explore lab" hidden>
+        <div class="section-heading">
+          <h2>生物学倾向</h2>
+          <span class="step-badge">3</span>
+        </div>
+        <div class="semantic-controls">
+          <fieldset>
+            <legend>细胞黏附</legend>
+            <div class="segmented" data-control="adhesion">
+              <button type="button" aria-pressed="false" data-value="0.2">松散</button><button type="button" aria-pressed="false" data-value="0.55">平衡</button><button type="button" aria-pressed="false" data-value="0.88">紧密</button>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>形变能力</legend>
+            <div class="segmented" data-control="deformability">
+              <button type="button" aria-pressed="false" data-value="0.18">僵硬</button><button type="button" aria-pressed="false" data-value="0.55">一般</button><button type="button" aria-pressed="false" data-value="0.9">柔软</button>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>群体协同</legend>
+            <div class="segmented" data-control="alignment">
+              <button type="button" aria-pressed="false" data-value="0.15">独立</button><button type="button" aria-pressed="false" data-value="0.55">跟随</button><button type="button" aria-pressed="false" data-value="0.9">一致</button>
+            </div>
+          </fieldset>
+          <label class="range-row">
+            <span><span id="geometryControlLabel">缺口宽度</span> <output id="gapOutput" for="gapRange">39 px</output></span>
+            <input id="gapRange" type="range" min="22" max="140" step="1" value="39" />
+          </label>
+        </div>
+      </section>
+
+      <section id="labControls" class="panel-section mode-only" data-visible-mode="lab" hidden>
+        <div class="section-heading">
+          <h2>可复现实验</h2>
+          <span class="step-badge">4</span>
+        </div>
+        <div class="lab-grid">
+          <label>随机种子<input id="seedInput" type="number" min="1" max="4294967295" value="20260803" /></label>
+          <label>细胞数量<input id="cellCountInput" type="number" min="24" max="140" value="68" /></label>
+          <label>实验时长（模拟秒）<input id="durationInput" type="number" min="12" max="120" value="42" /></label>
+          <label>地图网格<input id="mapSizeInput" type="number" min="3" max="7" value="5" /></label>
+          <label>每格随机种子<input id="mapSeedsInput" type="number" min="2" max="5" value="3" /></label>
+        </div>
+        <div class="hash-card" aria-label="可复现性标识">
+          <span>Config hash</span><code id="configHash">—</code>
+          <span>Scenario hash</span><code id="scenarioHash">—</code>
+        </div>
+        <div class="inline-actions">
+          <button type="button" id="openMap" class="secondary-button">运行批量侵袭地图</button>
+          <button type="button" id="copyConfig" class="secondary-button">复制参数 JSON</button>
+        </div>
+      </section>
+
+      <div class="start-zone">
+        <button type="button" id="startExperiment" class="primary-button"><span>开始实验</span><kbd>Space</kbd></button>
+        <p id="recommendationHint">推荐：比较“协同推进者”和“紧密拥堵者”。</p>
+      </div>
+    </aside>
+
+    <section id="experiment-stage" class="stage-panel" aria-label="模拟实验场">
+      <div class="stage-toolbar">
+        <div class="live-status" role="status" aria-live="polite" aria-atomic="true"><span id="statusDot" class="status-dot"></span><span id="stageStatus">已加载推荐实验，等待开始</span></div>
+        <div class="stage-meta"><span id="scenarioBadge">狭窄缺口</span><span id="seedBadge">Seed 20260803</span><span id="modelBadge">Model 2.0</span></div>
+      </div>
+      <div id="canvasWrap" class="canvas-wrap">
+        <canvas id="simulationCanvas" width="960" height="540" aria-label="癌细胞群体侵袭实时模拟">当前浏览器不支持 Canvas，无法显示模拟画面。</canvas>
+        <div id="canvasLabelLeft" class="canvas-label label-left">细胞群</div>
+        <div id="canvasLabelObstacle" class="canvas-label label-wall">组织边界</div>
+        <div id="canvasLabelSource" class="canvas-label label-source">迁移偏置 →</div>
+        <div id="hoverTip" class="hover-tip" role="tooltip" hidden></div>
+        <div id="replayBadge" class="replay-badge" hidden>关键事件回放</div>
+      </div>
+      <div class="transport" aria-label="实验播放控制">
+        <button type="button" id="resetButton" class="icon-button" title="重置实验" aria-label="重置实验">↺</button>
+        <button type="button" id="playPauseButton" class="transport-main" aria-label="开始或暂停">▶</button>
+        <button type="button" id="stepButton" class="icon-button" title="单步推进" aria-label="单步推进">›</button>
+        <label class="speed-control">速度
+          <select id="speedSelect"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select>
+        </label>
+        <div class="time-readout"><span id="timeNow">00:00.0</span><span>/</span><span id="timeMax">00:42</span></div>
+        <div class="progress-track" role="progressbar" aria-label="实验进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="progressBar"></span></div>
+      </div>
+
+      <section class="perturb-panel" aria-labelledby="perturb-title">
+        <div>
+          <div class="section-heading compact"><h2 id="perturb-title">施加一次扰动</h2><span class="step-badge">3</span></div>
+          <p id="perturbHelp">实验开始后选择一项。每次运行只能施加一次。</p>
+        </div>
+        <div id="perturbActions" class="perturb-actions"></div>
+      </section>
+
+      <section class="timeline-panel" aria-labelledby="timeline-title">
+        <div class="section-heading compact"><h2 id="timeline-title">关键事件</h2><span class="timeline-note">点击事件回放前后过程</span></div>
+        <div id="timeline" class="timeline"><p class="empty-state">事件将在实验运行后自动标注。</p></div>
+      </section>
+    </section>
+
+    <aside class="insight-panel" aria-label="状态、指标与结果">
+      <section class="observation-card" aria-labelledby="observation-title">
+        <div id="observation-title" class="eyebrow">现在发生什么</div>
+        <p id="observationText">细胞群处于稳定初始状态，等待启动。</p>
+        <div class="observation-detail"><span>主要限制因素</span><strong id="limitingFactor">几何—力学平衡</strong></div>
+      </section>
+
+      <section class="metrics-section" aria-labelledby="metrics-title">
+        <div class="section-heading compact"><h2 id="metrics-title">核心指标</h2><span class="step-badge">4</span></div>
+        <div class="metric-grid">
+          <article><span id="metricFirstLabel">首次通过时间</span><strong id="metricFirst">—</strong><small>simulation time</small></article>
+          <article><span id="metricPassLabel">通过率</span><strong id="metricPass">0%</strong><small>cells reached boundary</small></article>
+          <article><span id="metricIntegrityLabel">团块完整度</span><strong id="metricIntegrity">100%</strong><small>largest cluster</small></article>
+          <article><span id="metricModeLabel">侵袭模式</span><strong id="metricMode">观察中</strong><small>scenario-aware classifier</small></article>
+        </div>
+      </section>
+
+      <section id="resultCard" class="result-card" role="status" aria-live="polite" aria-atomic="true" hidden>
+        <div class="result-topline"><span>实验结论</span><span id="resultConfidence">单次随机种子</span></div>
+        <h2 id="resultMode">Collective Advance｜集体推进</h2>
+        <p id="resultExplanation"></p>
+        <div class="result-meta"><span>配置</span><code id="resultConfigHash">—</code><span>场景</span><code id="resultScenarioHash">—</code></div>
+        <div class="recommend-card"><strong>下一步对照实验</strong><p id="resultRecommendation"></p></div>
+      </section>
+
+      <section class="data-actions">
+        <div class="section-heading compact"><h2>保存与分享</h2></div>
+        <div class="action-grid">
+          <button type="button" id="saveLocal">保存项目</button>
+          <button type="button" id="shareLink">复制分享链接</button>
+          <button type="button" id="exportJson">结果 JSON</button>
+          <button type="button" id="exportCsv">指标 CSV</button>
+          <button type="button" id="exportPng">截图 PNG</button>
+          <button type="button" id="loadLocal">载入项目</button>
+        </div>
+        <p class="privacy-note">所有计算与文件生成均在本地浏览器中完成。</p>
+      </section>
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <p><strong>科学边界：</strong>这是用于机制探索和教育的简化二维模型，不用于临床预测、患者分层或治疗决策。</p>
+    <button type="button" id="openKeyboard" class="text-button">键盘快捷键</button>
+  </footer>
+
+  <dialog id="scienceDialog" class="dialog-card" aria-labelledby="scienceDialogTitle">
+    <form method="dialog"><button type="submit" class="dialog-close" aria-label="关闭">×</button></form>
+    <div class="eyebrow">Scientific scope</div>
+    <h2 id="scienceDialogTitle">v2 模型、假设与可信边界</h2>
+    <div class="dialog-columns">
+      <section><h3>模块化场景层</h3><p>场景只定义初始布局、几何、目标、扰动和判定语义；同一套方向与力学引擎运行狭窄缺口、出芽、leader–follower 和解堵实验。</p></section>
+      <section><h3>方向与力学层</h3><p>方向层组合持续性、邻居对齐、趋化、leader 影响和噪声；力学层处理排斥、黏附、有限形变与矩形组织障碍。</p></section>
+      <section><h3>批量侵袭地图</h3><p>地图不再使用静态经验着色，而是对每个格点运行多个随机种子，显示主导结果与种子一致度。</p></section>
+      <section><h3>可复现性</h3><p>每个结果保存应用、模型、场景版本，配置哈希、场景哈希、随机种子、扰动和事件时间线。</p></section>
+    </div>
+    <p class="dialog-note">当前仍是自研二维软粒子近似模型，不是 Cellular Potts Model，也不是患者特异模型。参数均为简化、归一化参数；任何科学结论都需要独立实验验证。</p>
+  </dialog>
+
+  <dialog id="mapDialog" class="dialog-card map-dialog" aria-labelledby="mapDialogTitle">
+    <form method="dialog"><button type="submit" class="dialog-close" aria-label="关闭">×</button></form>
+    <div class="eyebrow">Multi-seed invasion map</div>
+    <h2 id="mapDialogTitle">批量侵袭地图</h2>
+    <p id="mapSubtitle">横轴为黏附，纵轴为形变。每个格点运行多个随机种子。</p>
+    <div id="mapProgress" class="map-progress" role="status" aria-live="polite"></div>
+    <div id="mapLegend" class="map-legend"></div>
+    <div id="invasionMap" class="invasion-map" aria-label="二维侵袭模式地图"></div>
+  </dialog>
+
+  <dialog id="keyboardDialog" class="dialog-card keyboard-dialog" aria-labelledby="keyboardDialogTitle">
+    <form method="dialog"><button type="submit" class="dialog-close" aria-label="关闭">×</button></form>
+    <h2 id="keyboardDialogTitle">键盘快捷键</h2>
+    <dl><div><dt><kbd>Space</kbd></dt><dd>开始 / 暂停</dd></div><div><dt><kbd>R</kbd></dt><dd>重置实验</dd></div><div><dt><kbd>→</kbd></dt><dd>暂停时单步推进</dd></div><div><dt><kbd>Esc</kbd></dt><dd>退出事件回放</dd></div></dl>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
