@@ -58,7 +58,7 @@ dist
 
 项目不需要环境变量、后端、数据库或自定义服务器响应头。Cloudflare Pages 会读取构建产物中的 `_headers`；其他平台的安全响应头位于 `netlify.toml` 和 `vercel.json`。
 
-### Cloudflare Pages（零配置）
+**Cloudflare Pages（零配置）**
 
 仓库根目录即项目根目录，连接 Git 仓库后按以下方式设置即可：
 
@@ -74,6 +74,7 @@ dist
 Invasion-Lab/
 ├── package.json                   # 项目与脚本（根目录即项目根）
 ├── .node-version                  # Node 版本（22.16.0）
+├── release-manifest.json          # 发布清单
 ├── src/                           # 源码（见下方架构）
 ├── public/                        # 静态资源与 _headers / 404
 ├── presets/                       # 场景预置 JSON
@@ -94,6 +95,7 @@ src/
 │   ├── config.js                  # 校验、迁移与哈希
 │   ├── outcomes.js                # 场景感知的结果分类和解释
 │   ├── engine.js                  # 通用软粒子方向—力学引擎
+│   ├── model.js                   # 模块门面：聚合重导出 + heuristicPhase 启发式预测
 │   ├── batch.js                   # 多随机种子参数扫描
 │   ├── batch-worker.js            # 独立批量运行线程与进度
 │   ├── worker-runtime.js          # 固定时间步运行时
@@ -112,6 +114,9 @@ src/
 - `docs/VALIDATION.md`
 - `docs/DEPLOYMENT.md`
 - `docs/REFERENCES.md`
+- `docs/PRODUCT_SPEC.md`
+- `docs/SCIENTIFIC_SCOPE.md`
+- `docs/UX_PRINCIPLES.md`
 
 ## AI 开发 Agent
 
@@ -143,3 +148,11 @@ v2 的帧数据 stride 从 9 增加到 11，结果 JSON schema 从 1 升级到 2
 ## 许可证
 
 项目代码使用 MIT License。当前版本没有第三方运行时依赖；后续若接入 Artistoo，必须单独审查其许可证、引用要求与模型差异。
+
+---
+
+## AI 维护提醒
+
+> **⚠️ 任何修改此项目的 AI 代理（Claude Code、Cursor、Copilot 等）都必须同步更新本文件与 [AGENTS.md](./AGENTS.md)。**
+>
+> - 修改模拟引擎或场景定义时，必须保持固定种子确定性并补充对应测试
