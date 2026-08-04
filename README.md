@@ -68,6 +68,25 @@ dist
 
 无需设置 Root directory（默认即为仓库根）。交付归档与审查材料位于 `delivery/`，不参与构建。Node.js 版本读取 `.node-version`。
 
+## 项目结构
+
+```text
+Invasion-Lab/
+├── package.json                   # 项目与脚本（根目录即项目根）
+├── .node-version                  # Node 版本（22.16.0）
+├── src/                           # 源码（见下方架构）
+├── public/                        # 静态资源与 _headers / 404
+├── presets/                       # 场景预置 JSON
+├── scripts/                       # 构建、校验、扫描、smoke 脚本
+├── tests/                         # 22 个自动化测试（node --test）
+├── docs/                          # 架构、模型、场景、部署等文档
+├── .github/                       # CI 与 GitHub Pages 工作流
+├── delivery/                      # 交付归档（不参与构建）
+│   ├── baseline/  release/  reports/  diffs/
+│   └── checksums.txt              # 交付文件 SHA-256
+└── .codebuddy/agents/             # CodeBuddy 自定义 Agent（见下）
+```
+
 ## 架构
 
 ```text
@@ -97,6 +116,10 @@ src/
 - `docs/VALIDATION.md`
 - `docs/DEPLOYMENT.md`
 - `docs/REFERENCES.md`
+
+## AI 开发 Agent
+
+仓库内置 CodeBuddy 自定义 Agent（`.codebuddy/agents/iwt-dev.md`），在 CodeBuddy 中可用 `@iwt-dev` 引用或由描述自动触发。它封装了本项目的架构边界、版本与可复现性约束、标准验证命令（`npm run check`）和部署约定，适合在新增场景、修改引擎、更新测试与交付物时使用。
 
 ## 可复现性
 
