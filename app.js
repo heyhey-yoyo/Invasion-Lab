@@ -1039,7 +1039,7 @@ function downloadBlob(blob, filename) {
 function exportPayload() {
   return {
     schemaVersion: 4,
-    app: { name: 'Invasion Wind Tunnel', version: APP_VERSION, modelVersion: MODEL_VERSION },
+    app: { name: 'Invasion Lab', version: APP_VERSION, modelVersion: MODEL_VERSION },
     config: state.config,
     result: state.result,
     events: state.events,
