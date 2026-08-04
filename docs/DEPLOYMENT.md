@@ -47,4 +47,4 @@ npm run check
 
 ## 直接上传静态包
 
-解压 `invasion-wind-tunnel-v2.0.0-static.zip`，将压缩包根目录全部文件上传到静态站点根目录。不要只上传 `index.html`，否则 Worker、场景模块、图标和离线缓存会缺失。
+解压 `delivery/release/invasion-wind-tunnel-v2.0.0-static.zip`，将压缩包根目录全部文件上传到静态站点根目录。不要只上传 `index.html`，否则 Worker、场景模块、图标和离线缓存会缺失。
