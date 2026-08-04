@@ -16,24 +16,24 @@
 
 ## 仓库结构
 
-- 仓库根目录即项目根目录（`package.json`、`src/`、`scripts/`、`public/`、`presets/`、`tests/`、`docs/`）。
+- 仓库根目录即项目根目录，**也是站点根目录**（`index.html`、`app.js`、`simulation/`、`presets/`、`_headers` 等直接在根目录，可零构建发布）。`scripts/`、`tests/`、`docs/` 不参与部署。
 - `docs/`：架构、模型、场景、验证、部署、迁移与科学范围文档。
 
 ## 架构边界
 
-- `src/simulation/scenarios/catalog.js`：只定义场景名称、默认值、初始几何、扰动与指标文案。不包含积分器，不碰 DOM。
-- `src/simulation/config.js`：所有输入必须经过 `makeConfig()`（消毒、钳制、v1 迁移、版本字段、配置/场景哈希）。
-- `src/simulation/engine.js`：唯一的位置/速度更新引擎。方向层只产生驱动力，绝不直接改写位置。
-- `src/simulation/model.js`：模块门面（聚合重导出 + `heuristicPhase` 启发式预测），位置/速度更新仍以 `engine.js` 为准，改动时保持门面语义。
-- `src/simulation/outcomes.js`：场景感知的结果分类；同一通用指标可按场景映射到不同教学模式。
-- `src/simulation/batch.js` / `batch-worker.js`：专用批量 Worker 运行真实多随机种子模拟，与实时模拟 Worker 隔离，带逐点进度。
-- `src/simulation/worker-runtime.js`：固定 `1/30` 模拟秒时间步；限制每 tick 步数，避免追帧风暴。
-- `src/app.js`：UI、回放、导出与批量地图交互。
-- `src/service-worker.js`：PWA 离线缓存。
+- `simulation/scenarios/catalog.js`：只定义场景名称、默认值、初始几何、扰动与指标文案。不包含积分器，不碰 DOM。
+- `simulation/config.js`：所有输入必须经过 `makeConfig()`（消毒、钳制、v1 迁移、版本字段、配置/场景哈希）。
+- `simulation/engine.js`：唯一的位置/速度更新引擎。方向层只产生驱动力，绝不直接改写位置。
+- `simulation/model.js`：模块门面（聚合重导出 + `heuristicPhase` 启发式预测），位置/速度更新仍以 `engine.js` 为准，改动时保持门面语义。
+- `simulation/outcomes.js`：场景感知的结果分类；同一通用指标可按场景映射到不同教学模式。
+- `simulation/batch.js` / `batch-worker.js`：专用批量 Worker 运行真实多随机种子模拟，与实时模拟 Worker 隔离，带逐点进度。
+- `simulation/worker-runtime.js`：固定 `1/30` 模拟秒时间步；限制每 tick 步数，避免追帧风暴。
+- `app.js`：UI、回放、导出与批量地图交互。
+- `service-worker.js`：PWA 离线缓存。
 
 ## 版本与可复现性（改动时保持同步）
 
-- `src/simulation/versions.js`：`APP_VERSION`、`MODEL_VERSION`、`CONFIG_SCHEMA_VERSION`、`RESULT_SCHEMA_VERSION`、`SCENARIO_CATALOG_VERSION`。
+- `simulation/versions.js`：`APP_VERSION`、`MODEL_VERSION`、`CONFIG_SCHEMA_VERSION`、`RESULT_SCHEMA_VERSION`、`SCENARIO_CATALOG_VERSION`。
 - 帧数据 stride（当前 11）与结果 JSON `schemaVersion`（当前 2）是破坏性格式变更：必须升级版本，并记录到 `docs/MIGRATION_V1_TO_V2.md` 与 `README.md`。
 - 每条结果必须记录：应用/模型/场景/schema 版本、随机种子、配置哈希、场景哈希、事件时间线与科学边界声明。
 - 随机性必须保持确定：种子钳制在 `1..2^32-1`；相同模型版本 + 配置 + 种子产生完全相同的帧与事件。不要引入全局非确定性来源。
@@ -61,8 +61,8 @@ npm run check        # 以上全部
 
 ## 部署约定
 
-- Cloudflare Pages（零配置）：Framework preset 选 None，Build command 为 `npm run build`，Build output directory 为 `dist`，根目录即仓库根，Node 版本取自 `.node-version`。
-- 安全响应头来自 `public/_headers`（复制到 `dist/_headers`）；`netlify.toml` 与 `vercel.json` 供对应平台使用。
+- Cloudflare Pages（零配置）：Framework preset 选 None，Build command 留空，Build output directory 留空，根目录即站点根目录。仓库根目录已是完整站点，无需构建步骤。
+- 安全响应头来自根目录 `_headers`；`npm run build` 可生成 `dist/` 快照供需要构建输出目录的平台使用；`netlify.toml` 与 `vercel.json` 供对应平台使用。
 - 不要添加长期 Cache Rules：HTML、Service Worker 与 manifest 已设置 `no-cache`；其余资源使用平台默认值与 ETag。
 
 ## 工作约定

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { SimulationWorkerRuntime, normalizePlaybackSpeed } from '../src/simulation/worker-runtime.js';
+import { SimulationWorkerRuntime, normalizePlaybackSpeed } from '../simulation/worker-runtime.js';
 
 function createRuntime(config) {
   const messages = [];

@@ -44,41 +44,30 @@ npm run preview        # 预览已构建的 dist/
 
 ## 部署
 
-构建命令：
-
-```text
-npm run build
-```
-
-发布目录：
-
-```text
-dist
-```
-
-项目不需要环境变量、后端、数据库或自定义服务器响应头。Cloudflare Pages 会读取构建产物中的 `_headers`；其他平台的安全响应头位于 `netlify.toml` 和 `vercel.json`。
-
-**Cloudflare Pages（零配置）**
-
-仓库根目录即项目根目录，连接 Git 仓库后按以下方式设置即可：
+站点文件位于仓库根目录，可零构建直接发布。Cloudflare Pages 连接 Git 仓库后：
 
 - Framework preset：None
-- Build command：`npm run build`
-- Build output directory：`dist`
+- Build command：留空（无构建）
+- Build output directory：留空（默认即根目录）
 
-无需设置 Root directory（默认即为仓库根）。Node.js 版本读取 `.node-version`。
+无需设置 Root directory，无需构建步骤——仓库根目录就是完整站点。`npm run build` 仍可生成 `dist/` 快照，供需要构建输出目录的平台使用。项目不需要环境变量、后端、数据库或自定义服务器响应头。Cloudflare Pages 会读取根目录的 `_headers`；其他平台的安全响应头位于 `netlify.toml` 和 `vercel.json`。
 
 ## 项目结构
 
 ```text
 Invasion-Lab/
-├── package.json                   # 项目与脚本（根目录即项目根）
+├── index.html                     # 站点入口（根目录即站点）
+├── app.js  styles.css             # 应用逻辑与样式
+├── manifest.webmanifest           # PWA 清单
+├── service-worker.js              # PWA 离线缓存
+├── 404.html  robots.txt  _headers # 静态页与安全响应头
+├── assets/                        # 图标
+├── simulation/                    # 模拟引擎（见下方架构）
+├── presets/                       # 场景预置 JSON
+├── package.json                   # 项目与脚本
 ├── .node-version                  # Node 版本（22.16.0）
 ├── release-manifest.json          # 发布清单
-├── src/                           # 源码（见下方架构）
-├── public/                        # 静态资源与 _headers / 404
-├── presets/                       # 场景预置 JSON
-├── scripts/                       # 构建、校验、扫描、smoke 脚本
+├── scripts/                       # 校验、扫描、测试、构建、smoke 脚本
 ├── tests/                         # 22 个自动化测试（node --test）
 ├── docs/                          # 架构、模型、场景、部署等文档
 └── AGENTS.md                      # 通用 AI 代理指南（见下）
@@ -87,7 +76,7 @@ Invasion-Lab/
 ## 架构
 
 ```text
-src/
+根目录（即站点）
 ├── app.js                         # UI、回放、导出与批量地图交互
 ├── simulation/
 │   ├── versions.js                # 应用、模型与数据格式版本

@@ -8,8 +8,8 @@ import {
   classifyOutcome,
   makeConfig,
   migrateConfig
-} from '../src/simulation/model.js';
-import { SimulationEngine } from '../src/simulation/engine.js';
+} from '../simulation/model.js';
+import { SimulationEngine } from '../simulation/engine.js';
 
 test('v2 configuration is sanitized, scenario-aware, hashed, and versioned', () => {
   const config = makeConfig({

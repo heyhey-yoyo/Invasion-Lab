@@ -4,7 +4,7 @@ import { dirname, join } from 'node:path';
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const port = 4197;
-const child = spawn(process.execPath, ['scripts/serve.mjs', 'dist', String(port)], {
+const child = spawn(process.execPath, ['scripts/serve.mjs', '.', String(port)], {
   cwd: root,
   stdio: ['ignore', 'pipe', 'pipe']
 });

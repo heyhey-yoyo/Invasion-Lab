@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { runBatchScan } from '../src/simulation/batch.js';
+import { runBatchScan } from '../simulation/batch.js';
 
 test('batch map runs real multi-seed simulations and returns consensus summaries', () => {
   const result = runBatchScan({ scenarioId: 'narrow-gap', seed: 123 }, { size: 3, seedCount: 2, maxTime: 8, cellCount: 24 });

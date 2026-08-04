@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { PRESETS, SCENARIOS } from '../src/simulation/model.js';
-import { SimulationEngine } from '../src/simulation/engine.js';
+import { PRESETS, SCENARIOS } from '../simulation/model.js';
+import { SimulationEngine } from '../simulation/engine.js';
 
 function run(config, perturbation = null, perturbAt = 8) {
   const engine = new SimulationEngine({ maxTime: 42, seed: 20260803, ...config });

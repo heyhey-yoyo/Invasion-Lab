@@ -9,8 +9,7 @@ npm ci
 npm run check
 ```
 
-- 构建命令：`npm run build`
-- 发布目录：`dist`
+- 站点文件位于仓库根目录，可零构建直接发布
 - 环境变量：无
 - 后端、数据库、Functions：无
 
@@ -18,15 +17,14 @@ npm run check
 
 ## Cloudflare Pages
 
-项目设置：
+仓库根目录即站点根目录，连接 Git 仓库后无需任何构建配置：
 
 - Framework preset：None
-- Build command：`npm run build`
-- Build output directory：`dist`
-- Root directory：仓库根目录
-- Node.js：读取 `.node-version`
+- Build command：留空（无构建）
+- Build output directory：留空（默认即根目录）
+- Root directory：仓库根目录（默认）
 
-`public/_headers` 会复制到 `dist/_headers`。Cloudflare Pages 会解析部署资产目录中的 `_headers` 并将规则应用到静态响应。顶层 `404.html` 用于真正的 Not Found 页面；本项目使用查询参数而不是客户端深路由，因此不依赖 Pages 的 SPA 全路径回退。
+根目录 `_headers` 会被 Cloudflare Pages 解析并应用到静态响应。顶层 `404.html` 用于真正的 Not Found 页面；本项目使用查询参数而不是客户端深路由，因此不依赖 Pages 的 SPA 全路径回退。
 
 不建议额外设置全站长期 Cache Rule：当前文件名未做内容哈希，HTML、Service Worker 与 manifest 已显式 `no-cache`，其余静态资源使用平台默认缓存和 ETag。
 
