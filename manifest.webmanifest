@@ -4,8 +4,8 @@
   "description": "基于可变形细胞、显式细胞核、可重塑 ECM 与动态 Leader 的纯前端侵袭机制实验室。",
   "start_url": "./?app=iwt4",
   "display": "standalone",
-  "background_color": "#071419",
-  "theme_color": "#081217",
+  "background_color": "#071116",
+  "theme_color": "#071116",
   "icons": [
     {
       "src": "./assets/icon-192.png",
