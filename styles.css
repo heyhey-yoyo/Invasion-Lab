@@ -30,13 +30,13 @@ button:disabled { opacity: .45; cursor: not-allowed; }
 .topbar { height: 72px; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 24px; position: sticky; top: 0; z-index: 20; backdrop-filter: blur(18px); background: rgba(7,17,22,.88); }
 .brand { display: inline-flex; align-items: center; gap: 12px; min-width: 0; }
 .brand strong, .brand small { display: block; }
-.brand strong { letter-spacing: .02em; font-size: 14px; }
-.brand small { color: var(--muted); font-size: 13px; margin-top: 2px; }
-.brand-mark { width: 34px; height: 34px; position: relative; display: inline-block; border: 1px solid var(--line); border-radius: 10px; background: #0b1d23; }
-.brand-mark i { position: absolute; width: 8px; height: 8px; border-radius: 50%; background: var(--accent-2); }
-.brand-mark i:nth-child(1) { left: 7px; top: 8px; }
-.brand-mark i:nth-child(2) { left: 17px; top: 13px; background: var(--accent); }
-.brand-mark i:nth-child(3) { left: 9px; top: 20px; width: 10px; height: 6px; }
+.brand strong { letter-spacing: .02em; font-size: 18px; line-height: 1.15; }
+.brand small { color: var(--muted); font-size: 12px; margin-top: 2px; letter-spacing: .05em; }
+.brand-mark { width: 48px; height: 48px; position: relative; display: inline-block; border: 1px solid var(--line-strong); border-radius: 50%; background: radial-gradient(circle, rgba(91,224,206,0.22), transparent 70%); }
+.brand-mark i { position: absolute; width: 9px; height: 9px; border-radius: 50%; background: var(--accent-2); }
+.brand-mark i:nth-child(1) { left: 10px; top: 12px; }
+.brand-mark i:nth-child(2) { left: 26px; top: 18px; background: var(--accent); }
+.brand-mark i:nth-child(3) { left: 13px; top: 30px; width: 11px; height: 7px; }
 .mode-tabs { display: flex; align-items: center; padding: 4px; border: 1px solid var(--line); border-radius: 12px; background: #09171c; }
 .mode-tab { border: 0; border-radius: 8px; background: transparent; padding: 7px 16px; color: var(--muted); cursor: pointer; font-size: 12px; }
 .mode-tab span { opacity: .76; margin-left: 4px; }
