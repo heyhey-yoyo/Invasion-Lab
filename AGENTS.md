@@ -1,4 +1,4 @@
-# AGENTS.md — Invasion Wind Tunnel（肿瘤侵袭风洞）
+# Invasion Wind Tunnel（肿瘤侵袭风洞） — 项目说明（供 AI 编程代理阅读）
 
 本文件为在本仓库工作的 AI 编码代理提供指引。修改代码前请先阅读本文件。
 
