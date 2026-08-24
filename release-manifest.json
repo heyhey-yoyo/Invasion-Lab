@@ -1,0 +1,44 @@
+{
+  "name": "Invasion Wind Tunnel",
+  "version": "1.0.0",
+  "releaseDate": "2026-08-04",
+  "deploymentDirectory": "dist",
+  "runtimeDependencies": 0,
+  "automatedTests": 33,
+  "testsPassed": 33,
+  "scenarios": [
+    "narrow-gap",
+    "budding",
+    "leader-follower",
+    "unjamming"
+  ],
+  "interventions": [
+    "stiff-matrix",
+    "degradation-block",
+    "soft-nucleus",
+    "leader-suppression"
+  ],
+  "validation": [
+    "unique HTML IDs, ARIA references, explicit button types, manifest icons, and local assets",
+    "JavaScript syntax and local module imports for all source modules",
+    "deterministic seeded cell and ECM frames with stable configuration/scenario hashes",
+    "area-conserving shape tensors, explicit nuclear strain, shape-dependent contacts, and contact-length adhesion",
+    "degradable/remodelable ECM density, damage, strain, and fiber fields",
+    "dynamic leader emergence, turnover, replacement, and contact-network follower signaling",
+    "scenario-aware geometry, event detection, outcomes, and perturbations",
+    "fixed-timestep worker runtime and exactly-once final result delivery",
+    "real multi-seed batch maps and paired-seed single-factor comparisons",
+    "v1/v2/v3 configuration migration into the v4 schema",
+    "static build, service-worker inventory, and HTTP smoke checks",
+    "credential-pattern and local secret-file scan",
+    "boundary-contact events require actual cell contact rather than global ECM density",
+    "leader route choice propagates through contact networks without global follower reassignment",
+    "main, batch, and comparison worker messages are correlated to active run/request identifiers",
+    "small-sample paired comparisons expose exploratory t intervals and right-censoring counts",
+    "keyboard shortcuts do not override focused controls or open dialogs",
+    "service-worker updates wait for a safe activation boundary instead of forcing immediate takeover"
+  ],
+  "scientificStatus": "qualitative mechanism demonstrator; not a clinical prediction tool",
+  "staticAssetFiles": 37,
+  "browserAutomationStatus": "HTTP smoke checks cover deployment routes; no claim of pixel-perfect cross-browser equivalence."
+}

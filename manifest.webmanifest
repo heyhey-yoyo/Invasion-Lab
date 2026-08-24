@@ -1,0 +1,36 @@
+{
+  "name": "肿瘤侵袭模拟器｜Invasion Lab",
+  "short_name": "Invasion Lab",
+  "description": "基于可变形细胞、显式细胞核、可重塑 ECM 与动态 Leader 的纯前端侵袭机制实验室。",
+  "start_url": "./?app=iwt4",
+  "display": "standalone",
+  "background_color": "#071116",
+  "theme_color": "#071116",
+  "icons": [
+    {
+      "src": "./assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "id": "./?app=iwt4",
+  "scope": "./",
+  "lang": "zh-CN",
+  "categories": [
+    "education",
+    "science"
+  ]
+}
