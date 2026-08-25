@@ -93,3 +93,7 @@ npm run check        # 以上全部
 > - 变更帧 stride 或结果 schema 时，必须同步升级 `versions.js` 并更新迁移文档
 > - 不得把大量底层力学常数暴露到默认 UI
 > - `npm run check` 全绿之前不得宣称完成
+
+## 界面维护约定
+
+工作台使用 `ydchen-portfolio` 的米白 / 赤陶色视觉系统；视觉修改不得改变模拟模型、控制含义、结果 schema、固定种子确定性或科学边界。
