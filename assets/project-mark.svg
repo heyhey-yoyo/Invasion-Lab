@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <title>Invasion Lab</title><rect x="2" y="2" width="44" height="44" rx="4" fill="#24221f"/>
+  <path d="M23 8v13M23 27v13M29 8v13M29 27v13" stroke="#f3eee5" stroke-width="2.2" stroke-linecap="round"/>
+  <circle cx="13" cy="17" r="5" fill="none" stroke="#f3eee5" stroke-width="2.2"/><circle cx="35" cy="24" r="4" fill="#c15f3c"/>
+  <path d="M17 19c5 0 6 5 12 5m3-3 3 3-3 3" fill="none" stroke="#c15f3c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

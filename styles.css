@@ -289,3 +289,5 @@ h1,h2,h3{font-family:Georgia,"Times New Roman","Songti SC","STSong",serif;font-w
 body{font-size:15px}
 .primary-button{color:#fff}
 .scenario-card strong,.factor-list span,.comparison-builder label,.comparison-summary p,.comparison-metrics small,.map-progress{font-size:13px}
+.brand-mark{border-radius:0;background:url("./assets/project-mark.svg") center/100% 100% no-repeat}
+.brand-mark i{display:none}

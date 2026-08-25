@@ -1,4 +1,4 @@
-const CACHE = 'iwt-static-v1.0.0';
+const CACHE = 'iwt-static-v1.0.0-project-mark';
 const CORE = [
   './',
   './index.html',
@@ -26,6 +26,7 @@ const CORE = [
   './simulation/core/spatial-hash.js',
   './simulation/scenarios/catalog.js',
   './assets/icon.svg',
+  './assets/project-mark.svg',
   './assets/icon-192.png',
   './assets/icon-512.png',
   './manifest.webmanifest',
