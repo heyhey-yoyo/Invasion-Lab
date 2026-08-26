@@ -1,4 +1,4 @@
-const CACHE = 'iwt-static-v1.0.0-project-mark';
+const CACHE = 'iwt-static-v1.0.0-project-mark-light-1';
 const CORE = [
   './',
   './index.html',

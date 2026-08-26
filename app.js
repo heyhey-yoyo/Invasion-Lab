@@ -745,7 +745,7 @@ function drawECM(snapshot) {
       const x = column * cellSize;
       const y = row * cellSize;
       const alpha = clamp(density * 0.23, 0.015, 0.24);
-      ctx.fillStyle = `rgba(${Math.round(76 + damage * 40)},${Math.round(111 + damage * 45)},${Math.round(108 + damage * 35)},${alpha})`;
+      ctx.fillStyle = `rgba(${Math.round(107 + damage * 35)},${Math.round(99 + damage * 32)},${Math.round(91 + damage * 26)},${alpha})`;
       ctx.fillRect(x, y, cellSize + 0.5, cellSize + 0.5);
       if ((column + row) % 2 === 0 && density > 0.11) {
         const fiberX = packed[offset + 2] / 127.5 - 1;
@@ -754,7 +754,7 @@ function drawECM(snapshot) {
         const cy = y + cellSize / 2;
         const length = cellSize * (0.2 + density * 0.22);
         ctx.globalAlpha = clamp(0.04 + density * 0.17, 0.04, 0.22);
-        ctx.strokeStyle = damage > 0.28 ? '#7fc2b7' : '#afc2bb';
+        ctx.strokeStyle = damage > 0.28 ? '#b7a99a' : '#c7beb3';
         ctx.lineWidth = 0.7;
         ctx.beginPath();
         ctx.moveTo(cx - fiberX * length, cy - fiberY * length);
@@ -776,9 +776,9 @@ function renderFrame(frame, timestamp) {
   ctx.clearRect(0, 0, width, height);
 
   const background = ctx.createLinearGradient(0, 0, width, height);
-  background.addColorStop(0, '#071419');
-  background.addColorStop(0.55, '#091a20');
-  background.addColorStop(1, '#061116');
+  background.addColorStop(0, '#35312d');
+  background.addColorStop(0.55, '#2d2a27');
+  background.addColorStop(1, '#272522');
   ctx.fillStyle = background;
   ctx.fillRect(0, 0, width, height);
 
@@ -786,8 +786,8 @@ function renderFrame(frame, timestamp) {
   drawFlowField(geometry, timestamp, width, height);
 
   for (const opening of geometry.openings || []) {
-    ctx.fillStyle = 'rgba(130,215,203,.065)';
-    ctx.strokeStyle = 'rgba(130,215,203,.3)';
+    ctx.fillStyle = 'rgba(193,95,60,.065)';
+    ctx.strokeStyle = 'rgba(193,95,60,.3)';
     ctx.fillRect(opening.x - opening.width / 2, opening.y - opening.height / 2, opening.width, opening.height);
     ctx.strokeRect(opening.x - opening.width / 2, opening.y - opening.height / 2, opening.width, opening.height);
   }
@@ -795,18 +795,18 @@ function renderFrame(frame, timestamp) {
   for (const [obstacleIndex, obstacle] of (geometry.obstacles || []).entries()) {
     const gradient = ctx.createLinearGradient(obstacle.x, obstacle.y, obstacle.x + obstacle.width, obstacle.y + obstacle.height);
     if (obstacle.kind === 'matrix') {
-      gradient.addColorStop(0, 'rgba(57,76,78,.78)');
-      gradient.addColorStop(1, 'rgba(94,112,112,.46)');
+      gradient.addColorStop(0, 'rgba(78,74,69,.78)');
+      gradient.addColorStop(1, 'rgba(126,118,107,.46)');
     } else {
-      gradient.addColorStop(0, 'rgba(77,100,106,.48)');
-      gradient.addColorStop(0.5, 'rgba(139,159,163,.7)');
-      gradient.addColorStop(1, 'rgba(65,85,91,.42)');
+      gradient.addColorStop(0, 'rgba(92,86,78,.48)');
+      gradient.addColorStop(0.5, 'rgba(155,146,132,.7)');
+      gradient.addColorStop(1, 'rgba(81,77,71,.42)');
     }
     ctx.fillStyle = gradient;
     ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
     ctx.save();
     ctx.globalAlpha = obstacle.kind === 'matrix' ? 0.18 : 0.1;
-    ctx.strokeStyle = '#d3e1df';
+    ctx.strokeStyle = '#d5cec4';
     ctx.lineWidth = 0.65;
     const spacing = obstacle.kind === 'matrix' ? 16 : 10;
     for (let line = obstacle.y - obstacle.width; line < obstacle.y + obstacle.height + obstacle.width; line += spacing) {
@@ -950,7 +950,7 @@ function drawFlowField(geometry, timestamp, width, height) {
     const endX = arrow.x + arrow.dx * length * pulse;
     const endY = arrow.y + arrow.dy * length * pulse;
     ctx.globalAlpha = 0.035 + clamp(arrow.concentration, 0, 1) * 0.11;
-    ctx.strokeStyle = '#87cec5';
+    ctx.strokeStyle = '#b7a99a';
     ctx.beginPath();
     ctx.moveTo(arrow.x, arrow.y);
     ctx.lineTo(endX, endY);
@@ -962,7 +962,7 @@ function drawFlowField(geometry, timestamp, width, height) {
   if (!arrows.length) {
     const targets = geometry.targetPoints || [[width - 80, height / 2]];
     ctx.globalAlpha = 0.07;
-    ctx.strokeStyle = '#87cec5';
+    ctx.strokeStyle = '#b7a99a';
     for (const target of targets) {
       ctx.beginPath();
       ctx.moveTo(width * 0.55, height / 2);
