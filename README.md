@@ -76,6 +76,6 @@ v4 破坏性格式变化：
 > **⚠️ 任何修改此项目的 AI 代理都必须同步更新本文件与 [AGENTS.md](./AGENTS.md)。**
 >
 > - 新增功能 → 在 README 的相应章节中添加用户可理解的说明
-> - 版本号以 GitHub Release 为准（当前 v1.0.0），页面不显示版本号
+> - 版本号以 GitHub Release 为准，页面不显示版本号
 > - 变更帧 stride 或结果 schema → 同步升级 `simulation/versions.js` 并更新迁移文档
 > - 部署方式变更 → 同步更新本文部署章节

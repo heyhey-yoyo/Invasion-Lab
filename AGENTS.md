@@ -4,7 +4,7 @@
 
 ## 项目概览
 
-**Invasion Wind Tunnel** 是一个可部署的纯前端多场景实验室，用于肿瘤细胞群体侵袭的定性机制实验。v1.0.0 在面积守恒可变形细胞与显式细胞核基础上，加入可降解/可重塑 ECM、动态 Leader 竞争、接触网络方向传播和配对随机种子对照。
+**Invasion Wind Tunnel** 是一个可部署的纯前端多场景实验室，用于肿瘤细胞群体侵袭的定性机制实验。当前版本在面积守恒可变形细胞与显式细胞核基础上，加入可降解/可重塑 ECM、动态 Leader 竞争、接触网络方向传播和配对随机种子对照。
 
 - 零运行时依赖，可静态部署（Cloudflare Pages / Netlify / Vercel）
 - Node.js >= 20（`.node-version` 锁定 22.16.0），全部使用 ESM 模块
@@ -23,17 +23,42 @@
 
 | 文件 | 作用 |
 | --- | --- |
-| `simulation/engine.js` | 多尺度细胞—细胞核—ECM 积分器 |
+| `index.html` | 页面入口 |
+| `app.js` | UI、回放、导出、形态/细胞核渲染与批量地图交互 |
+| `styles.css` | 全部样式 |
+| `service-worker.js` | PWA 离线缓存 |
+| `manifest.webmanifest` / `404.html` / `robots.txt` | PWA 清单、自定义 404、抓取规则 |
+| `_headers` | Cloudflare Pages 安全响应头 |
+| `simulation/engine.js` | 多尺度细胞—细胞核—ECM 积分器（唯一状态积分引擎） |
+| `simulation/config.js` | 配置入口 `makeConfig()`（消毒、钳制、旧版迁移、版本字段、配置/场景哈希） |
+| `simulation/model.js` | 模块门面（聚合重导出 + `heuristicPhase` 启发式预测） |
+| `simulation/outcomes.js` | 场景感知的结果分类 |
 | `simulation/interventions.js` | 少量离散实验处理 |
-| `simulation/comparison.js` | 配对随机种子单因素对照 |
-| `simulation/comparison-worker.js` | 对照实验 Worker |
+| `simulation/profiles.js` | 实验预设（jam / collective / budding / escape）与旧版别名迁移 |
+| `simulation/versions.js` | 版本常量（APP / MODEL / CONFIG_SCHEMA / RESULT_SCHEMA / SCENARIO_CATALOG） |
+| `simulation/comparison.js` / `simulation/comparison-worker.js` | 配对随机种子单因素对照（独立 Worker） |
+| `simulation/batch.js` / `simulation/batch-worker.js` | 多随机种子参数扫描（专用批量 Worker） |
+| `simulation/worker.js` | 实时模拟 Worker 入口（驱动 `worker-runtime.js`） |
+| `simulation/worker-runtime.js` | 固定时间步实时 Worker |
 | `simulation/core/deformable-cell.js` | 面积守恒边界与形状相关接触 |
 | `simulation/core/ecm-field.js` | ECM 密度、损伤、应变与纤维场 |
 | `simulation/core/spatial-hash.js` | 确定性空间哈希邻居搜索 |
 | `simulation/core/guidance-field.js` | 绕障碍稳态扩散型引导场 |
+| `simulation/core/components.js` | 细胞群落连通分量等组件工具 |
+| `simulation/core/hash.js` | `stableStringify` 与 FNV-1a 32 位稳定哈希 |
+| `simulation/core/rng.js` | 确定性随机数发生器（mulberry32 风格） |
 | `simulation/scenarios/catalog.js` | 场景几何、初态、扰动与语义 |
-| `simulation/worker-runtime.js` | 固定时间步实时 Worker |
-| `simulation/batch.js` / `simulation/batch-worker.js` | 多随机种子参数扫描 |
+| `presets/` | 4 个内置实验预设（jam / collective / budding / escape，JSON） |
+| `scripts/` | 构建、静态校验、凭据扫描、本地服务与 HTTP 冒烟脚本（`*.mjs`） |
+| `tests/` | 33 项自动化测试（5 个 `*.test.mjs`） |
+| `docs/` | 迁移与参考文献等 12 篇文档 |
+| `assets/` | 图标（`icon.svg`、`icon-192.png`、`icon-512.png`）与 `project-mark.svg` |
+| `netlify.toml` / `vercel.json` | 对应平台部署配置 |
+| `release-manifest.json` | 发布清单 |
+| `package.json` / `package-lock.json` | npm 脚本与锁定依赖（无运行时依赖） |
+| `.node-version` | Node 版本锁定（22.16.0） |
+| `THIRD_PARTY_NOTICES.md` / `LICENSE` | 第三方声明与 MIT 许可证 |
+| `.gitignore` | Git 忽略规则（含 `dist/` 构建产物） |
 
 ## 架构边界
 
@@ -68,7 +93,7 @@ npm run check        # 以上全部
 
 ### 版本与可复现性（改动时保持同步）
 
-- **对外版本号以 GitHub Release 为准**（当前 v1.0.0）；页面不显示版本号
+- **对外版本号以 GitHub Release 为准**；页面不显示版本号
 - `simulation/versions.js`：`APP_VERSION`、`MODEL_VERSION`、`CONFIG_SCHEMA_VERSION`、`RESULT_SCHEMA_VERSION`、`SCENARIO_CATALOG_VERSION`。`APP_VERSION` 与 `MODEL_VERSION` 必须与最新 Release 对齐；schema/场景版本为内部格式版本，独立演进
 - 帧数据 stride（当前 20）与结果 JSON `schemaVersion`（当前 4）是破坏性格式变更：必须升级版本，并记录到对应迁移文档与 `README.md`
 - 每条结果必须记录：应用/模型/场景/schema 版本、随机种子、配置哈希、场景哈希、事件时间线与科学边界声明
@@ -96,13 +121,18 @@ npm run check        # 以上全部
 - 安全响应头来自根目录 `_headers`；`npm run build` 可生成 `dist/` 快照供需要构建输出目录的平台使用；`netlify.toml` 与 `vercel.json` 供对应平台使用
 - 不要添加长期 Cache Rules：HTML、Service Worker 与 manifest 已设置 `no-cache`；其余资源使用平台默认值与 ETag
 
+## 安全与数据注意事项
+
+- 所有模拟与计算仅在浏览器本地运行，不发起网络请求、不上传数据；项目数据只保存在浏览器 `localStorage`（保存键 `iwt-project-v4`，含 v1–v3 项目自动迁移）。
+- 安全响应头来自根目录 `_headers`（CSP 等）；`npm run scan` 做敏感文件与凭据模式检查，提交前必须通过。
+
 ## 界面维护约定
 
 工作台使用 `ydchen-portfolio` 的米白 / 赤陶色视觉系统；视觉修改不得改变模拟模型、控制含义、结果 schema、固定种子确定性或科学边界。视觉验收以正文 15px、操作与比较标签不小于 12px 为基线；主按钮需满足浅色背景对比度，并在 1440px 桌面与 390px 手机视口检查整体横向溢出。
 
 ## 标志维护约定
 
-项目标志采用统一的深灰方章、米白线条与赤陶色识别点，页面标志与 favicon 共用同一 `project-mark.svg`。后续替换必须保持原标志容器宽高，不得借机改变页眉、网格或页面布局。
+项目标志采用统一的深灰方章、米白线条与赤陶色识别点，页面标志与 favicon 共用同一 `assets/project-mark.svg`。后续替换必须保持原标志容器宽高，不得借机改变页眉、网格或页面布局。
 
 ---
 
