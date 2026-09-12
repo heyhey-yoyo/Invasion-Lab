@@ -19,6 +19,19 @@
 
 仓库根目录即项目根目录，**也是站点根目录**（`index.html`、`app.js`、`simulation/`、`presets/`、`_headers` 等直接在根目录，可零构建发布）。`scripts/`、`tests/`、`docs/` 不参与部署。
 
+### 架构边界
+
+- `simulation/scenarios/catalog.js`：只定义场景名称、默认值、初始几何、扰动与指标文案。不包含积分器，不碰 DOM
+- `simulation/config.js`：所有输入必须经过 `makeConfig()`（消毒、钳制、旧版迁移、版本字段、配置/场景哈希）
+- `simulation/engine.js`：唯一的状态积分引擎。方向层只产生驱动力，绝不直接改写位置
+- `simulation/model.js`：模块门面（聚合重导出 + `heuristicPhase` 启发式预测），状态更新仍以 `engine.js` 为准
+- `simulation/outcomes.js`：场景感知的结果分类
+- `simulation/batch.js` / `batch-worker.js`：专用批量 Worker 运行真实多随机种子模拟
+- `simulation/comparison.js` / `comparison-worker.js`：独立配对对照 Worker
+- `simulation/worker-runtime.js`：固定 `1/30` 模拟秒时间步；限制每 tick 步数，避免追帧风暴
+- `app.js`：UI、回放、导出、形态/细胞核渲染与批量地图交互
+- `service-worker.js`：PWA 离线缓存
+
 ## 项目结构
 
 | 文件 | 作用 |
@@ -60,19 +73,6 @@
 | `THIRD_PARTY_NOTICES.md` / `LICENSE` | 第三方声明与 MIT 许可证 |
 | `.gitignore` | Git 忽略规则（含 `dist/` 构建产物） |
 
-## 架构边界
-
-- `simulation/scenarios/catalog.js`：只定义场景名称、默认值、初始几何、扰动与指标文案。不包含积分器，不碰 DOM
-- `simulation/config.js`：所有输入必须经过 `makeConfig()`（消毒、钳制、旧版迁移、版本字段、配置/场景哈希）
-- `simulation/engine.js`：唯一的状态积分引擎。方向层只产生驱动力，绝不直接改写位置
-- `simulation/model.js`：模块门面（聚合重导出 + `heuristicPhase` 启发式预测），状态更新仍以 `engine.js` 为准
-- `simulation/outcomes.js`：场景感知的结果分类
-- `simulation/batch.js` / `batch-worker.js`：专用批量 Worker 运行真实多随机种子模拟
-- `simulation/comparison.js` / `comparison-worker.js`：独立配对对照 Worker
-- `simulation/worker-runtime.js`：固定 `1/30` 模拟秒时间步；限制每 tick 步数，避免追帧风暴
-- `app.js`：UI、回放、导出、形态/细胞核渲染与批量地图交互
-- `service-worker.js`：PWA 离线缓存
-
 ## 运行与构建
 
 ```bash
@@ -89,7 +89,7 @@ npm run check        # 以上全部
 
 新增场景、实验预设、配置字段、Worker 行为或导出格式时，**必须**在 `tests/` 中补充覆盖确定性与边界情况的对应测试。`npm run check` 全绿之前不得宣称完成。
 
-维护回归入口（各项通过后仍需按改动范围验证浏览器关键路径）：
+发布检查：
 
 ```bash
 npm run check
@@ -100,7 +100,7 @@ npm run check
 ### 版本与可复现性（改动时保持同步）
 
 - **对外版本号以 GitHub Release 为准**；页面不显示版本号
-- `simulation/versions.js`：`APP_VERSION`、`MODEL_VERSION`、`CONFIG_SCHEMA_VERSION`、`RESULT_SCHEMA_VERSION`、`SCENARIO_CATALOG_VERSION`。`APP_VERSION` 与 `MODEL_VERSION` 必须与最新 Release 对齐；schema/场景版本为内部格式版本，独立演进
+- `simulation/versions.js`：`APP_VERSION`、`MODEL_VERSION`、`CONFIG_SCHEMA_VERSION`、`RESULT_SCHEMA_VERSION`、`SCENARIO_CATALOG_VERSION`。`APP_VERSION` 与应用发布版本保持一致；`MODEL_VERSION` 按科学模型行为独立演进；schema/场景版本为内部格式版本，独立演进
 - 帧数据 stride（当前 20）与结果 JSON `schemaVersion`（当前 4）是破坏性格式变更：必须升级版本，并记录到对应迁移文档与 `README.md`
 - 每条结果必须记录：应用/模型/场景/schema 版本、随机种子、配置哈希、场景哈希、事件时间线与科学边界声明
 - 随机性必须保持确定：种子钳制在 `1..2^32-1`；相同模型版本 + 配置 + 种子产生完全相同的帧与事件。不要引入全局非确定性来源
@@ -121,19 +121,25 @@ npm run check
 - 文档与交付物以中文为主；代码标识符保持英文
 - 每次改动应通过 `npm run check`，提交信息注明版本/格式影响
 
+### 品牌与排版
+
 本项目为普通项目类。页眉桌面 72px、手机（≤640px）64px；方章 48×48px / 40×40px，标题衬线 18px/400/1.3、手机 16px，副标题无衬线 12px/400/1.4；标志与标题间距 12px，标题与副标题间距 2px。
 
-页眉内容区最大宽度 1280px（含两侧各 16px 内边距），整体居中；品牌和标题靠左，操作区靠右，窄屏换行后仍保持该对齐。品牌页眉在文档顶部正常排布，随页面滚走，不固定或吸顶；表格内部表头、侧边工具和手机底部导航可按功能保留。
+页眉背景和底部分隔线横跨页面可用宽度，内容区最大宽度 1280px（含两侧各 16px 内边距），整体居中；品牌和标题靠左，操作区靠右，窄屏换行后仍保持该对齐。品牌页眉在文档顶部正常排布，随页面滚走，不固定或吸顶；表格内部表头、侧边工具和手机底部导航可按功能保留。
 
 正文采用统一系统无衬线字体，默认 16px / 1.6；标题采用 Georgia、Times New Roman、Songti SC、STSong 衬线族。数字与代码可使用 SFMono-Regular、Consolas、Liberation Mono、Microsoft YaHei 等宽族。按钮和输入通常 15px，辅助文字 12–14px，密集科学数据允许有理由的局部调整。页面底色 #f3eee5、正文 #24221f、赤陶强调 #a94f31，柔和底色上的强调文字 #823a25；科学分类色、热图、作品主题与状态色保留必要区分度。
 
-主样式保留一个顶层 `:root`，条件规则和深色画布局部令牌独立维护，不再叠加整套旧深色主题与末尾浅色覆盖。修改视觉后核对实际渲染字体、字号、间距、对比度和操作可达性；至少检查 1440、820、390px，涉及断点时补查两侧宽度，涉及画布或存储时补查交互。构建、单测、本地浏览器和线上部署分别记录；发布后禁用缓存/硬刷新，并核对实际资源版本。
+主样式保留一个顶层 `:root`，条件规则和深色画布局部令牌独立维护，避免叠加重复主题或末尾覆盖层。修改视觉后核对实际渲染字体、字号、间距、对比度和操作可达性；至少检查 1440、820、390px，涉及断点时补查两侧宽度，涉及画布或存储时补查交互。构建、单测、本地浏览器和线上部署分别记录；发布后禁用缓存/硬刷新，并核对实际资源版本。
 
-顶层主题变量集中在单一 :root，响应式条件规则保留。继续运行完整 check（验证、敏感项扫描、模型测试、构建和 HTTP 冒烟）。
+页眉外层保持 width:100%、max-width:none，水平内边距为 max(16px,calc((100% - 1280px)/2 + 16px))；按包含块宽度计算，避免 100vw 将滚动条计入而产生溢出。手机以 16px 留白，保持标题及操作可达。
 
-保持 960×540 逻辑模拟坐标，Canvas 缓冲改按实际 CSS 矩形 × DPR，绘图变换和指针映射保持一致。模型、随机数与科学参数未调整；验证 DPR 1/2/3 和三档视口、保存恢复及 JSON 导出。
+### 交互与数据约束
 
-样式引用与离线预缓存使用一致的内容版本参数；静态资源检查按 URL 路径核对文件，允许查询参数。
+模型保持 960×540 逻辑空间，缓冲按实际矩形与 min(DPR,2) 缩放，指针使用一致映射。桌面模式与说明按钮共同靠右；手机模式导航保留在底部，页眉不设置会改变 fixed 包含块的 backdrop-filter 或 transform。样式 URL、离线清单与缓存名同步，资源校验按 URL 路径解析。
+
+### 界面维护约定
+
+工作台使用 `ydchen-portfolio` 的米白 / 赤陶色视觉系统；视觉修改不得改变模拟模型、控制含义、结果 schema、固定种子确定性或科学边界。视觉验收以正文 16px、操作与比较标签不小于 12px 为基线；主按钮需满足浅色背景对比度，并在 1440px 桌面与 390px 手机视口检查整体横向溢出。
 
 ## 部署
 
@@ -146,15 +152,9 @@ npm run check
 - 所有模拟与计算仅在浏览器本地运行，不发起网络请求、不上传数据；项目数据只保存在浏览器 `localStorage`（保存键 `iwt-project-v4`，含 v1–v3 项目自动迁移）。
 - 安全响应头来自根目录 `_headers`（CSP 等）；`npm run scan` 做敏感文件与凭据模式检查，提交前必须通过。
 
-## 界面维护约定
-
-工作台使用 `ydchen-portfolio` 的米白 / 赤陶色视觉系统；视觉修改不得改变模拟模型、控制含义、结果 schema、固定种子确定性或科学边界。视觉验收以正文 16px、操作与比较标签不小于 12px 为基线；主按钮需满足浅色背景对比度，并在 1440px 桌面与 390px 手机视口检查整体横向溢出。
-
 ## 标志维护约定
 
 项目标志采用统一的深灰方章、米白线条与赤陶色识别点，页面标志与 favicon 共用同一 `assets/project-mark.svg`。后续替换必须保持原标志容器宽高，不得借机改变页眉、网格或页面布局。
-
----
 
 ## AI 维护提醒
 
