@@ -40,7 +40,7 @@ const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
 const duplicates = ids.filter((id, index) => ids.indexOf(id) !== index);
 if (duplicates.length) throw new Error(`Duplicate HTML ids: ${[...new Set(duplicates)].join(', ')}`);
 
-for (const reference of [...html.matchAll(/(?:src|href)="\.\/([^"?#]+)"/g)].map(match => match[1])) {
+for (const reference of [...html.matchAll(/(?:src|href)="\.\/([^"?#]+)(?:[?#][^"]*)?"/g)].map(match => match[1])) {
   if (reference.endsWith('/')) continue;
   await access(join(root, reference));
 }
@@ -68,7 +68,7 @@ if (/\.skipWaiting\s*\(/.test(serviceWorker)) throw new Error('Service worker mu
 const coreBlock = serviceWorker.match(/const CORE = \[([\s\S]*?)\];/)?.[1] || '';
 const offlineAssets = [...coreBlock.matchAll(/['"]\.\/([^'"]*)['"]/g)].map(match => match[1] || 'index.html');
 for (const asset of offlineAssets) {
-  const normalized = asset === '' ? 'index.html' : asset;
+  const normalized = asset === '' ? 'index.html' : asset.split(/[?#]/, 1)[0];
   await accessDeployAsset(normalized);
 }
 
