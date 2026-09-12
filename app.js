@@ -86,6 +86,8 @@ const elements = {
 };
 
 const ctx = elements.canvas.getContext('2d', { alpha: false });
+const VIEW_WIDTH = 960;
+const VIEW_HEIGHT = 540;
 const worker = new Worker('./simulation/worker.js', { type: 'module' });
 const batchWorker = new Worker('./simulation/batch-worker.js', { type: 'module' });
 const comparisonWorker = new Worker('./simulation/comparison-worker.js', { type: 'module' });
@@ -113,6 +115,18 @@ const state = {
   batchRequestId: 0,
   comparisonRequestId: 0
 };
+
+function resizeCanvasForDpr() {
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  const width = Math.round(VIEW_WIDTH * dpr);
+  const height = Math.round(VIEW_HEIGHT * dpr);
+  if (elements.canvas.width !== width || elements.canvas.height !== height) {
+    elements.canvas.width = width;
+    elements.canvas.height = height;
+    state.needsRender = true;
+  }
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
 
 function readUrlConfig() {
   const query = new URLSearchParams(location.search);
@@ -428,7 +442,8 @@ function updateMetrics(meta) {
     : metrics.integrity;
   elements.integrity.textContent = `${Math.round(clamp(thirdMetric, 0, 1) * 100)}%`;
   const provisional = meta.time > 3 ? classifyOutcome(metrics, state.config) : null;
-  elements.mode.textContent = state.result?.mode.label || provisional?.label.split('｜')[1] || '观察中';
+  const modeText = state.result?.mode.label || provisional?.label;
+  elements.mode.textContent = modeText?.split('｜')[1] || modeText || '观察中';
   elements.timeNow.textContent = formatTime(meta.time);
   const progress = clamp(meta.time / state.config.maxTime * 100, 0, 100);
   elements.progress.style.width = `${progress}%`;
@@ -685,6 +700,7 @@ function updateCanvasLabels(labels = {}) {
 
 function draw(timestamp) {
   requestAnimationFrame(draw);
+  resizeCanvasForDpr();
   let frame = state.currentFrame;
   if (state.replay) {
     if (!state.replay.last || timestamp - state.replay.last > 70) {
@@ -769,8 +785,8 @@ function drawECM(snapshot) {
 
 function renderFrame(frame, timestamp) {
   const { data, meta } = frame;
-  const width = elements.canvas.width;
-  const height = elements.canvas.height;
+  const width = VIEW_WIDTH;
+  const height = VIEW_HEIGHT;
   const geometry = meta.geometry || { obstacles: [], openings: [], targetPoints: [] };
   const stride = meta.stride || 9;
   ctx.clearRect(0, 0, width, height);
@@ -976,8 +992,8 @@ function drawFlowField(geometry, timestamp, width, height) {
 function pointerToWorld(event) {
   const rectangle = elements.canvas.getBoundingClientRect();
   return {
-    x: (event.clientX - rectangle.left) / rectangle.width * elements.canvas.width,
-    y: (event.clientY - rectangle.top) / rectangle.height * elements.canvas.height,
+    x: (event.clientX - rectangle.left) / rectangle.width * VIEW_WIDTH,
+    y: (event.clientY - rectangle.top) / rectangle.height * VIEW_HEIGHT,
     localX: event.clientX - rectangle.left,
     localY: event.clientY - rectangle.top
   };
