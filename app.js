@@ -118,14 +118,16 @@ const state = {
 
 function resizeCanvasForDpr() {
   const dpr = Math.min(2, window.devicePixelRatio || 1);
-  const width = Math.round(VIEW_WIDTH * dpr);
-  const height = Math.round(VIEW_HEIGHT * dpr);
+  const rect = elements.canvas.getBoundingClientRect();
+  const width = Math.max(1, Math.round(rect.width * dpr));
+  const height = Math.max(1, Math.round(rect.height * dpr));
   if (elements.canvas.width !== width || elements.canvas.height !== height) {
     elements.canvas.width = width;
     elements.canvas.height = height;
     state.needsRender = true;
   }
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  // 保留 960×540 模型绘图坐标，缓冲与 CSS 矩形一致；指针仍映射到同一逻辑空间。
+  ctx.setTransform(width / VIEW_WIDTH, 0, 0, height / VIEW_HEIGHT, 0, 0);
 }
 
 function readUrlConfig() {
