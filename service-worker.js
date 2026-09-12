@@ -2,7 +2,7 @@ const CACHE = 'iwt-static-v1.0.0-project-mark-light-3-scroll-header-align';
 const CORE = [
   './',
   './index.html',
-  './styles.css?v=d68a5ebaddee',
+  './styles.css?v=5e0a3d09d3c9',
   './app.js',
   './simulation/model.js',
   './simulation/versions.js',
