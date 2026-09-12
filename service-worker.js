@@ -1,4 +1,4 @@
-const CACHE = 'iwt-static-v1.0.0-project-mark-light-3';
+const CACHE = 'iwt-static-v1.0.0-project-mark-light-3-scroll-header';
 const CORE = [
   './',
   './index.html',
