@@ -1,20 +1,20 @@
-import { makeConfig } from './config.js';
-import { connectedComponents } from './core/components.js';
+import { makeConfig } from './config.js?v=1.0.1-upgrade-2';
+import { connectedComponents } from './core/components.js?v=1.0.1-upgrade-2';
 import {
   axesFromStrain,
   ellipseSupportRadius,
   rectangleContact,
   shapeIndex,
   shortestAngleDelta
-} from './core/deformable-cell.js';
-import { ExtracellularMatrixField } from './core/ecm-field.js';
-import { GuidanceFieldSet } from './core/guidance-field.js';
-import { RNG } from './core/rng.js';
-import { buildNeighborPairs } from './core/spatial-hash.js';
-import { getIntervention } from './interventions.js';
-import { classifyOutcome, explainOutcome, recommendControl } from './outcomes.js';
-import { buildGeometry, getScenario } from './scenarios/catalog.js';
-import { RESULT_SCHEMA_VERSION } from './versions.js';
+} from './core/deformable-cell.js?v=1.0.1-upgrade-2';
+import { ExtracellularMatrixField } from './core/ecm-field.js?v=1.0.1-upgrade-2';
+import { GuidanceFieldSet } from './core/guidance-field.js?v=1.0.1-upgrade-2';
+import { RNG } from './core/rng.js?v=1.0.1-upgrade-2';
+import { buildNeighborPairs } from './core/spatial-hash.js?v=1.0.1-upgrade-2';
+import { getIntervention } from './interventions.js?v=1.0.1-upgrade-2';
+import { classifyOutcome, explainOutcome, recommendControl } from './outcomes.js?v=1.0.1-upgrade-2';
+import { buildGeometry, getScenario } from './scenarios/catalog.js?v=1.0.1-upgrade-2';
+import { RESULT_SCHEMA_VERSION } from './versions.js?v=1.0.1-upgrade-2';
 
 const TAU = Math.PI * 2;
 const clamp = (value, low, high) => Math.max(low, Math.min(high, value));

@@ -1,13 +1,13 @@
-import { fnv1a32 } from './core/hash.js';
-import { LEGACY_PRESET_ALIASES, PRESETS } from './profiles.js';
-import { INTERVENTIONS } from './interventions.js';
-import { DEFAULT_SCENARIO_ID, getScenario, SCENARIOS } from './scenarios/catalog.js';
+import { fnv1a32 } from './core/hash.js?v=1.0.1-upgrade-2';
+import { LEGACY_PRESET_ALIASES, PRESETS } from './profiles.js?v=1.0.1-upgrade-2';
+import { INTERVENTIONS } from './interventions.js?v=1.0.1-upgrade-2';
+import { DEFAULT_SCENARIO_ID, getScenario, SCENARIOS } from './scenarios/catalog.js?v=1.0.1-upgrade-2';
 import {
   APP_VERSION,
   CONFIG_SCHEMA_VERSION,
   MODEL_VERSION,
   SCENARIO_CATALOG_VERSION
-} from './versions.js';
+} from './versions.js?v=1.0.1-upgrade-2';
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 

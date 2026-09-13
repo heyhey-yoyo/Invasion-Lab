@@ -1,12 +1,12 @@
-export { APP_VERSION, CONFIG_SCHEMA_VERSION, MODEL_VERSION, RESULT_SCHEMA_VERSION } from './versions.js';
-export { LEVELS, PRESETS } from './profiles.js';
-export { getIntervention, INTERVENTIONS, interventionsForScenario } from './interventions.js';
-export { DEFAULT_SCENARIO_ID, getScenario, SCENARIOS } from './scenarios/catalog.js';
-export { makeConfig, migrateConfig } from './config.js';
-export { classifyOutcome, explainOutcome, phaseLabel, recommendControl } from './outcomes.js';
+export { APP_VERSION, CONFIG_SCHEMA_VERSION, MODEL_VERSION, RESULT_SCHEMA_VERSION } from './versions.js?v=1.0.1-upgrade-2';
+export { LEVELS, PRESETS } from './profiles.js?v=1.0.1-upgrade-2';
+export { getIntervention, INTERVENTIONS, interventionsForScenario } from './interventions.js?v=1.0.1-upgrade-2';
+export { DEFAULT_SCENARIO_ID, getScenario, SCENARIOS } from './scenarios/catalog.js?v=1.0.1-upgrade-2';
+export { makeConfig, migrateConfig } from './config.js?v=1.0.1-upgrade-2';
+export { classifyOutcome, explainOutcome, phaseLabel, recommendControl } from './outcomes.js?v=1.0.1-upgrade-2';
 
-import { classifyOutcome } from './outcomes.js';
-import { makeConfig } from './config.js';
+import { classifyOutcome } from './outcomes.js?v=1.0.1-upgrade-2';
+import { makeConfig } from './config.js?v=1.0.1-upgrade-2';
 
 export function heuristicPhase(adhesion, deformability, gapWidth = 36, scenarioId = 'narrow-gap') {
   const config = makeConfig({ scenarioId, presetId: 'custom', adhesion, deformability, gapWidth });

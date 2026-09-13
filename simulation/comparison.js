@@ -1,6 +1,6 @@
-import { makeConfig } from './config.js';
-import { SimulationEngine } from './engine.js';
-import { getIntervention } from './interventions.js';
+import { makeConfig } from './config.js?v=1.0.1-upgrade-2';
+import { SimulationEngine } from './engine.js?v=1.0.1-upgrade-2';
+import { getIntervention } from './interventions.js?v=1.0.1-upgrade-2';
 
 const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
 const mean = values => values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : 0;

@@ -9,7 +9,7 @@ import {
   makeConfig,
   migrateConfig,
   phaseLabel
-} from './simulation/model.js';
+} from './simulation/model.js?v=1.0.1-upgrade-2';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -88,9 +88,9 @@ const elements = {
 const ctx = elements.canvas.getContext('2d', { alpha: false });
 const VIEW_WIDTH = 960;
 const VIEW_HEIGHT = 540;
-const worker = new Worker('./simulation/worker.js', { type: 'module' });
-const batchWorker = new Worker('./simulation/batch-worker.js', { type: 'module' });
-const comparisonWorker = new Worker('./simulation/comparison-worker.js', { type: 'module' });
+const worker = new Worker('./simulation/worker.js?v=1.0.1-upgrade-2', { type: 'module' });
+const batchWorker = new Worker('./simulation/batch-worker.js?v=1.0.1-upgrade-2', { type: 'module' });
+const comparisonWorker = new Worker('./simulation/comparison-worker.js?v=1.0.1-upgrade-2', { type: 'module' });
 
 const state = {
   mode: 'play',

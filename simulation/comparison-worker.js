@@ -1,4 +1,4 @@
-import { runPairedComparison } from './comparison.js';
+import { runPairedComparison } from './comparison.js?v=1.0.1-upgrade-2';
 
 self.addEventListener('message', event => {
   const message = event.data || {};

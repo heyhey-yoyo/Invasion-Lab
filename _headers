@@ -14,3 +14,15 @@
 
 /manifest.webmanifest
   Cache-Control: no-cache
+
+/app.js
+  Cache-Control: no-cache
+
+/simulation/*
+  Cache-Control: no-cache
+
+/styles.css
+  Cache-Control: no-cache
+
+/presets/*
+  Cache-Control: no-cache

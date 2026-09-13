@@ -1,4 +1,4 @@
-import { SimulationEngine } from './engine.js';
+import { SimulationEngine } from './engine.js?v=1.0.1-upgrade-2';
 
 export const SIMULATION_STEP_SECONDS = 1 / 30;
 const MAX_ELAPSED_SECONDS = 0.25;

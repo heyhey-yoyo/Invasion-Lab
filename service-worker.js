@@ -1,30 +1,30 @@
-const CACHE = 'iwt-static-v1.0.1-semantics-1';
+const CACHE = 'iwt-static-v1.0.1-upgrade-2';
 const CORE = [
   './',
   './index.html',
   './styles.css?v=a95201181efb',
-  './app.js',
-  './simulation/model.js',
-  './simulation/versions.js',
-  './simulation/profiles.js',
-  './simulation/interventions.js',
-  './simulation/comparison.js',
-  './simulation/comparison-worker.js',
-  './simulation/config.js',
-  './simulation/outcomes.js',
-  './simulation/engine.js',
-  './simulation/batch.js',
-  './simulation/batch-worker.js',
-  './simulation/worker-runtime.js',
-  './simulation/worker.js',
-  './simulation/core/hash.js',
-  './simulation/core/rng.js',
-  './simulation/core/components.js',
-  './simulation/core/deformable-cell.js',
-  './simulation/core/guidance-field.js',
-  './simulation/core/ecm-field.js',
-  './simulation/core/spatial-hash.js',
-  './simulation/scenarios/catalog.js',
+  './app.js?v=1.0.1-upgrade-2',
+  './simulation/model.js?v=1.0.1-upgrade-2',
+  './simulation/versions.js?v=1.0.1-upgrade-2',
+  './simulation/profiles.js?v=1.0.1-upgrade-2',
+  './simulation/interventions.js?v=1.0.1-upgrade-2',
+  './simulation/comparison.js?v=1.0.1-upgrade-2',
+  './simulation/comparison-worker.js?v=1.0.1-upgrade-2',
+  './simulation/config.js?v=1.0.1-upgrade-2',
+  './simulation/outcomes.js?v=1.0.1-upgrade-2',
+  './simulation/engine.js?v=1.0.1-upgrade-2',
+  './simulation/batch.js?v=1.0.1-upgrade-2',
+  './simulation/batch-worker.js?v=1.0.1-upgrade-2',
+  './simulation/worker-runtime.js?v=1.0.1-upgrade-2',
+  './simulation/worker.js?v=1.0.1-upgrade-2',
+  './simulation/core/hash.js?v=1.0.1-upgrade-2',
+  './simulation/core/rng.js?v=1.0.1-upgrade-2',
+  './simulation/core/components.js?v=1.0.1-upgrade-2',
+  './simulation/core/deformable-cell.js?v=1.0.1-upgrade-2',
+  './simulation/core/guidance-field.js?v=1.0.1-upgrade-2',
+  './simulation/core/ecm-field.js?v=1.0.1-upgrade-2',
+  './simulation/core/spatial-hash.js?v=1.0.1-upgrade-2',
+  './simulation/scenarios/catalog.js?v=1.0.1-upgrade-2',
   './assets/icon.svg',
   './assets/project-mark.svg',
   './assets/icon-192.png',
@@ -66,7 +66,7 @@ async function networkFirst(request, fallback) {
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE)
-      .then(cache => cache.addAll(CORE))
+      .then(cache => cache.addAll(CORE.map(url => new Request(url, { cache: 'reload' }))))
   );
 });
 

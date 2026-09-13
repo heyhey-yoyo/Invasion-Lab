@@ -93,7 +93,7 @@ for (const script of scripts) {
     ...source.matchAll(/import\(['"](\.[^'"]+)['"]\)/g)
   ].map(match => match[1]);
   for (const specifier of imports) {
-    const candidate = resolve(dirname(script), specifier);
+    const candidate = resolve(dirname(script), specifier.split(/[?#]/, 1)[0]);
     await access(candidate);
   }
 }

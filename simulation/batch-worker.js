@@ -1,4 +1,4 @@
-import { runBatchScan } from './batch.js';
+import { runBatchScan } from './batch.js?v=1.0.1-upgrade-2';
 
 self.addEventListener('message', event => {
   const message = event.data || {};
