@@ -1,8 +1,8 @@
-const CACHE = 'iwt-static-v1.0.0-4ef6e0fee802';
+const CACHE = 'iwt-static-v1.0.0-a95201181efb';
 const CORE = [
   './',
   './index.html',
-  './styles.css?v=4ef6e0fee802',
+  './styles.css?v=a95201181efb',
   './app.js',
   './simulation/model.js',
   './simulation/versions.js',
