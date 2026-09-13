@@ -1006,8 +1006,8 @@ export class SimulationEngine {
     }
     if (this.scenario.id === 'leader-follower') {
       if (metrics.activeLeaders === 0) return '前缘细胞正在竞争 Leader 身份，群体尚未形成稳定牵引不对称';
-      if (!this.eventFlags.has('leader-pass')) return '动态 Leader 正通过接触链向后方传播方向信息';
-      return metrics.branchCount >= 2 ? '群体正在两个分支间分裂' : 'Follower 正沿接触链传播的方向信号前进';
+      if (!this.eventFlags.has('leader-pass')) return '动态 Leader 正通过邻近网络向后方传播方向信息';
+      return metrics.branchCount >= 2 ? '群体正在两个分支间分裂' : 'Follower 正沿邻近网络传播的方向信号前进';
     }
     if (this.scenario.id === 'unjamming') {
       if (!this.eventFlags.has('first-contact')) return '高密度团块正在进入受压缩通道';

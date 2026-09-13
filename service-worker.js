@@ -1,4 +1,4 @@
-const CACHE = 'iwt-static-v1.0.0-a95201181efb';
+const CACHE = 'iwt-static-v1.0.1-semantics-1';
 const CORE = [
   './',
   './index.html',

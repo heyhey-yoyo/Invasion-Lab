@@ -1,6 +1,6 @@
 {
   "name": "invasion-wind-tunnel",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "type": "module",
   "description": "A deployable, front-end-only, multiscale cell-nucleus-ECM laboratory for qualitative cancer-cell collective invasion experiments.",
@@ -14,7 +14,8 @@
     "test:scenarios": "node --test tests/presets.test.mjs",
     "test:batch": "node --test tests/batch.test.mjs",
     "smoke": "node scripts/smoke-http.mjs",
-    "scan": "node scripts/scan-sensitive.mjs"
+    "scan": "node scripts/scan-sensitive.mjs",
+    "release:manifest": "node scripts/release-manifest.mjs"
   },
   "engines": {
     "node": ">=20"

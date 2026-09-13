@@ -1,4 +1,4 @@
-export const APP_VERSION = '1.0.0';
+export const APP_VERSION = '1.0.1';
 export const MODEL_VERSION = 'iwtx-multiscale-ecm-leader-1.0.0';
 export const CONFIG_SCHEMA_VERSION = 4;
 export const RESULT_SCHEMA_VERSION = 4;

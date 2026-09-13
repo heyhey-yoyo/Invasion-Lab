@@ -10,14 +10,14 @@
 3. Boromand A, et al. *Jamming of Deformable Polygons.* Phys Rev Lett. 2018. arXiv:1801.06150. 可变形粒子模型使用面积、周长和接触排斥描述细胞形状与拥堵。
 4. Alert R, Trepat X. *Physical Models of Collective Cell Migration.* Annu Rev Condens Matter Phys. 2020. 讨论自驱粒子、顶点、相场等模型的适用范围。
 5. Buttenschön A, Edelstein-Keshet L. *Bridging from single to collective cell migration: A review of models and links to experiments.* PLoS Comput Biol. 2020.
-6. Löber J, et al. *Multiphase field models for collective cell migration.* PLoS Comput Biol. 2022.
+6. Wenzel D, Voigt A. *Multiphase field models for collective cell migration.* Physical Review E. 2021;104:054410. [DOI: 10.1103/PhysRevE.104.054410](https://doi.org/10.1103/PhysRevE.104.054410)。
 
 ## 细胞核与受限迁移
 
 7. Davidson PM, et al. *Nuclear deformability constitutes a rate-limiting step during cell migration in 3-D environments.* Cell Mol Bioeng. 2014.
 8. Wolf K, et al. *Physical limits of cell migration: control by ECM space and nuclear deformation and tuning by proteolysis and traction force.* J Cell Biol. 2013.
 9. McGregor AL, et al. *Squish and squeeze—the nucleus as a physical barrier during migration in confining environments.* Curr Opin Cell Biol. 2016.
-10. He M, et al. *Multicompartment cell-based modeling of confined migration: regulation by cell intrinsic and extrinsic factors.* Biophys J. 2018.
+10. Kumar S, Das A, Sen S. *Multicompartment cell-based modeling of confined migration: regulation by cell intrinsic and extrinsic factors.* Molecular Biology of the Cell. 2018;29:1599–1610. [DOI: 10.1091/mbc.E17-05-0313](https://doi.org/10.1091/mbc.E17-05-0313)。
 
 ## 肿瘤出芽定义
 
@@ -30,6 +30,6 @@
 
 ## v4 新增机制参考
 
-12. Dynamic leader-cell selection and mechanical competition studies informed frontness, traction asymmetry, stress-dependent turnover, and replacement.
-13. Degradable and remodelable ECM migration models informed the qualitative density–damage–fiber feedback; no parameter values were copied.
+12. 动态 Leader 竞争是本项目的机制假设：前缘位置、牵引不对称、应激退出和补位的具体组合没有逐项外部验证，不作为独立文献引用。集体迁移的一般背景见第 4、5 条。
+13. ECM 密度—损伤—纤维反馈是本项目的定性模型假设；具体更新规则及数值未由文献直接校准。受限迁移与蛋白水解的一般背景见第 8 条，不将研究方向冒充可定位的独立文献。
 14. Artistoo PerimeterConstraint and ActivityConstraint documentation informed the separation of shape constraints and protrusive activity; no runtime code was embedded.

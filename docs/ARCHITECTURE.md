@@ -6,7 +6,7 @@ v4 保持纯静态、零运行时依赖、固定种子确定性和少参数 UI�
 
 ## 模块边界
 
-- `simulation/engine.js`：位置、速度、形状、细胞核、接触网络、状态和 Leader 更新。
+- `simulation/engine.js`：位置、速度、形状、细胞核、局部邻近网络、状态和 Leader 更新。
 - `simulation/core/ecm-field.js`：低分辨率 ECM 密度、损伤、应变、纤维方向和双向作用。
 - `simulation/core/spatial-hash.js`：确定性空间哈希，降低全量邻居搜索成本。
 - `simulation/interventions.js`：离散处理定义，不暴露底层常数。
