@@ -1,4 +1,4 @@
-# Invasion Wind Tunnel（肿瘤侵袭风洞） — 项目说明（供 AI 编程代理阅读）
+# Invasion Wind Tunnel｜肿瘤侵袭风洞 — 项目说明（供 AI 编程代理阅读）
 
 本文件为在本仓库工作的 AI 编码代理提供指引。修改代码前请先阅读本文件。
 
@@ -63,7 +63,7 @@
 | `simulation/scenarios/catalog.js` | 场景几何、初态、扰动与语义 |
 | `presets/` | 4 个内置实验预设（jam / collective / budding / escape，JSON） |
 | `scripts/` | 构建、静态校验、凭据扫描、本地服务、HTTP 冒烟与发布清单生成脚本（`*.mjs`） |
-| `tests/` | 33 项自动化测试（5 个 `*.test.mjs`） |
+| `tests/` | 35 项自动化测试（6 个 `*.test.mjs`） |
 | `docs/` | 架构、科学模型、迁移、参考文献与验证文档 |
 | `assets/` | 图标（`icon.svg`、`icon-192.png`、`icon-512.png`）与 `project-mark.svg` |
 | `netlify.toml` / `vercel.json` | 对应平台部署配置 |
@@ -72,6 +72,7 @@
 | `.node-version` | Node 版本锁定（22.16.0） |
 | `THIRD_PARTY_NOTICES.md` / `LICENSE` | 第三方声明与 MIT 许可证 |
 | `.gitignore` | Git 忽略规则（含 `dist/` 构建产物） |
+| `README.md` / `AGENTS.md` | 用户向项目说明与 AI 代理维护说明 |
 
 ## 运行与构建
 
@@ -79,7 +80,7 @@
 npm ci
 npm run validate     # 静态结构、资源、语法、离线清单
 npm run scan         # 敏感文件与凭据模式检查
-npm test             # 33 项自动化测试
+npm test             # 35 项自动化测试
 npm run build        # 构建到 dist/
 npm run smoke        # 本地 HTTP 冒烟（10 条路由）
 npm run check        # 以上全部
@@ -130,7 +131,7 @@ npm run check
 
 页眉背景和底部分隔线横跨页面可用宽度，内容区最大宽度 1280px（含两侧各 16px 内边距），整体居中；品牌和标题靠左，操作区靠右，窄屏换行后仍保持该对齐。品牌页眉在文档顶部正常排布，随页面滚走，不固定或吸顶；表格内部表头、侧边工具和手机底部导航可按功能保留。
 
-正文采用统一系统无衬线字体，默认 16px / 1.6；标题采用 Georgia、Times New Roman、Songti SC、STSong 衬线族。数字与代码可使用 SFMono-Regular、Consolas、Liberation Mono、Microsoft YaHei 等宽族。按钮和输入通常 15px，辅助文字 12–14px，密集科学数据允许有理由的局部调整。页面底色 #f3eee5、正文 #24221f、赤陶强调 #a94f31，柔和底色上的强调文字 #823a25；科学分类色、热图、作品主题与状态色保留必要区分度。
+正文采用统一系统无衬线字体，默认 16px / 1.6；标题采用 Georgia、Times New Roman、Songti SC、STSong 衬线族。数字与代码可使用 SFMono-Regular、Consolas、Liberation Mono、Microsoft YaHei 等宽族。按钮和输入通常 15px，辅助文字 12–14px，密集科学数据允许有理由的局部调整。页面底色 #f3eee5、正文 #24221f、赤陶强调 #a94f31；科学分类色、热图、作品主题与状态色保留必要区分度。
 
 主样式保留一个顶层 `:root`，条件规则和深色画布局部令牌独立维护，避免叠加重复主题或末尾覆盖层。修改视觉后核对实际渲染字体、字号、间距、对比度和操作可达性；至少检查 1440、820、390px，涉及断点时补查两侧宽度，涉及画布或存储时补查交互。构建、单测、本地浏览器和线上部署分别记录；发布后禁用缓存/硬刷新，并核对实际资源版本；还必须保留旧 Service Worker 与站点缓存，验证普通刷新或应用更新提示的实际升级流程，不能用清空缓存代替。
 
@@ -148,7 +149,7 @@ npm run check
 
 ## 部署
 
-发布缓存修订必须贯穿 HTML 脚本、深层模块引用、Worker/importScripts 与 SW 预缓存。_headers 请求使用 no-cache；托管平台可能覆盖响应缓存期限，发布仍须同步整条依赖链的资源地址并核对线上字节。SW 安装以 Request.cache=reload 获取资源。资源缓存修订独立于应用/模型/schema，不改科学算法；缓存回归检查整条依赖链，不能只检查入口查询参数。
+发布缓存修订必须贯穿 HTML 脚本、深层模块引用、Worker/importScripts 与 SW 预缓存。`_headers` 对 `/index.html`、`/app.js`、`/simulation/*`、`/styles.css`、`/presets/*`、`/service-worker.js`、`/manifest.webmanifest` 设置 `Cache-Control: no-cache`（站点根路径请求不在覆盖内）；托管平台可能覆盖响应缓存期限，发布仍须同步整条依赖链的资源地址并核对线上字节。SW 安装以 Request.cache=reload 获取资源。资源缓存修订独立于应用/模型/schema，不改科学算法；缓存回归检查整条依赖链，不能只检查入口查询参数。
 
 发布前运行项目验证命令，提交并固定最终源码，再执行 `npm run release:manifest -- <仓库外的清单.json>`。输出父目录须已存在，清单对应本地实际文件字节；生成器拒绝脏工作区、仓库内输出和覆盖已有文件，不宣称执行了测试。操作与历史记录见 [发布清单说明](./docs/releases/README.md)。
 
