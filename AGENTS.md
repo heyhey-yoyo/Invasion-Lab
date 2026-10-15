@@ -64,7 +64,7 @@
 | `presets/` | 4 个内置实验预设（jam / collective / budding / escape，JSON） |
 | `scripts/` | 构建、静态校验、凭据扫描、本地服务、HTTP 冒烟与发布清单生成脚本（`*.mjs`） |
 | `tests/` | 35 项自动化测试（6 个 `*.test.mjs`） |
-| `docs/` | 架构、科学模型、迁移、参考文献与验证文档 |
+| `docs/` | 架构、科学模型、迁移、参考文献、验证、部署、产品规格、场景、科学边界与 UX 文档 |
 | `assets/` | 图标（`icon.svg`、`icon-192.png`、`icon-512.png`）与 `project-mark.svg` |
 | `netlify.toml` / `vercel.json` | 对应平台部署配置 |
 | `docs/releases/` | 发布清单操作说明与按版本归档的历史清单 |
