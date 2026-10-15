@@ -103,7 +103,7 @@ npm run check
 ### 版本与可复现性（改动时保持同步）
 
 - **对外版本号以 GitHub Release 为准**；页面不显示版本号
-- `package.json` 与 `package-lock.json` 顶层及根项目版本保持一致，`validate-static.mjs` 会检查；历史发布清单不参与当前版本或测试数校验。
+- `package.json` 与 `package-lock.json` 顶层及根项目版本保持一致，`validate-static.mjs` 会检查；历史发布清单不得作为版本或测试数的核对来源。
 - `simulation/versions.js`：`APP_VERSION`、`MODEL_VERSION`、`CONFIG_SCHEMA_VERSION`、`RESULT_SCHEMA_VERSION`、`SCENARIO_CATALOG_VERSION`。`APP_VERSION` 与应用发布版本保持一致；`MODEL_VERSION` 按科学模型行为独立演进；schema/场景版本为内部格式版本，独立演进
 - 帧数据 stride（当前 20）与结果 JSON `schemaVersion`（当前 4）是破坏性格式变更：必须升级版本，并记录到对应迁移文档与 `README.md`
 - 每条结果必须记录：应用/模型/场景/schema 版本、随机种子、配置哈希、场景哈希、事件时间线与科学边界声明
